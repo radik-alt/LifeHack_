@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/item_post_background"
+    android:layout_columnWeight="2"
+    android:layout_marginTop="10sp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imagePost"
+        android:layout_gravity="center"
+        android:layout_columnWeight="0"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_width="150sp"
+        android:layout_height="150sp"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_columnWeight="1"
+        android:padding="20sp"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/titlePost"
+                android:layout_gravity="left"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:text="Lorem Inspum"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/starsRating"
+                android:layout_gravity="right"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="@color/goldColor"
+                android:text="4.8"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:layout_marginStart="5sp"
+                android:src="@drawable/ic_golden_star_24"
+                android:layout_width="20sp"
+                android:layout_height="20sp"/>
+
+        </GridLayout>
+
+        <TextView
+            android:id="@+id/descPost"
+            android:layout_marginTop="15sp"
+            android:text="Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-дизайне. Lorem Ipsum является стандартной рыбой для текстов на латинице с начала XVI века. В то время некий безымянный печатник создал большую коллекцию размеров и форм шрифтов, используя Lorem Ipsum для распечатки образцов. Lorem Ipsum не только успешно пережил без заметных изменений пять веков, но и перешагнул в электронный дизайн. Его популяризации в новое время послужили публикация листов Letraset с образцами Lorem Ipsum в 60-х годах и, в более недавнее время, программы электронной вёрстки типа Aldus PageMaker, в шаблонах которых используется Lorem Ipsum."
+            android:maxLines="4"
+            android:layout_width="220sp"
+            android:layout_height="80sp"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginTop="10sp"
+            android:textColor="@color/white"
+            android:text="FUN"
+            android:textSize="16sp"
+            android:background="@drawable/fun_button"
+            android:layout_width="80sp"
+            android:layout_height="40sp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/adapterTags"
+            android:layout_marginTop="10sp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</GridLayout>

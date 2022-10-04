@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_host"
+    app:startDestination="@id/logInAccountFragment">
+
+    <fragment
+        android:id="@+id/logInFragment"
+        android:name="com.example.lifehack.presentation.Account.RegisterFragment"
+        android:label="fragment_log_in"
+        tools:layout="@layout/fragment_log_in" >
+        <action
+            android:id="@+id/action_logInFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/logInAccountFragment"
+        android:name="com.example.lifehack.presentation.Account.LogInAccountFragment"
+        android:label="fragment_log_in_account"
+        tools:layout="@layout/fragment_log_in_account" >
+        <action
+            android:id="@+id/action_logInAccountFragment_to_logInFragment"
+            app:destination="@id/logInFragment" />
+        <action
+            android:id="@+id/action_logInAccountFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.lifehack.presentation.Home.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_settingUserFragment"
+            app:destination="@id/settingUserFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_postShowFragment"
+            app:destination="@id/postShowFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addLifeHackFragment2"
+        android:name="com.example.lifehack.presentation.AddLifeHack.AddLifeHackFragment"
+        android:label="fragment_add_life_hack"
+        tools:layout="@layout/fragment_add_life_hack" />
+    <fragment
+        android:id="@+id/settingUserFragment"
+        android:name="com.example.lifehack.presentation.Account.SettingUser.SettingUserFragment"
+        android:label="fragment_setting_user"
+        tools:layout="@layout/fragment_setting_user" >
+        <action
+            android:id="@+id/action_settingUserFragment_to_logInAccountFragment"
+            app:destination="@id/logInAccountFragment"
+            app:popUpTo="@id/logInAccountFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/postShowFragment"
+        android:name="com.example.lifehack.presentation.Home.viewPost.PostShowFragment"
+        android:label="fragment_post_show"
+        tools:layout="@layout/fragment_post_show" />
+    <fragment
+        android:id="@+id/ratingFragment"
+        android:name="com.example.lifehack.presentation.Rating.RatingFragment"
+        android:label="fragment_rating"
+        tools:layout="@layout/fragment_rating" />
+    <fragment
+        android:id="@+id/friendsFragment"
+        android:name="com.example.lifehack.presentation.Friends.FriendsFragment"
+        android:label="fragment_friends"
+        tools:layout="@layout/fragment_friends" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.lifehack.presentation.Search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+</navigation>

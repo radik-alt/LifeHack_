@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_name_app">46sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="size_header_add_post">26sp</dimen>
+</resources>
