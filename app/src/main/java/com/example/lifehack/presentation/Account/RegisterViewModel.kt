@@ -19,17 +19,9 @@ class RegisterViewModel(
     private val requestData = MutableLiveData<RequestToken>()
 
 
-    fun singUp(user: SingUpUser): Register {
+    fun singUp(user: SingUpUser){
         viewModelScope.launch {
-            val request = repositoryApi.singUp(user)
-            requestData.value = request
+            repositoryApi.singUp(user)
         }
-        return Register.ErrorRegister("Регистрация не прошла...")
     }
-}
-
-sealed class Register{
-
-    class SuccessRegister(val requestToken: RequestToken): Register()
-    class ErrorRegister(val messageError: String):Register()
 }

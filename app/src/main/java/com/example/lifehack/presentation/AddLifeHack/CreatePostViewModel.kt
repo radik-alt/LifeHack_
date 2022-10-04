@@ -16,13 +16,13 @@ class CreatePostViewModel(
     fun createPost(post: CreatePost, token: String){
         viewModelScope.launch {
             val request = apiRepository.createPost(post, "Bearer $token")
-            if (request.isSuccessful){
-                Log.d("PostCreatePost", request.body().toString())
-            } else {
-                Log.d("PostCreatePost", request.errorBody().toString())
-            }
-
-            Log.d("PostCreatePost", request.code().toString())
+//            if (request.isSuccessful){
+//                Log.d("PostCreatePost", request.body().toString())
+//            } else {
+//                Log.d("PostCreatePost", request.errorBody().toString())
+//            }
+//
+//            Log.d("PostCreatePost", request.code().toString())
         }
     }
 }

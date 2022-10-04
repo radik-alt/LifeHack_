@@ -14,5 +14,7 @@
     <color name="secondColor">#3a68b0</color>
     <color name="inputColor">#f1f1f1</color>
     <color name="funButton">#3e832a</color>
+    <color name="childrenColor">#ffaeed</color>
+    <color name="techColor">#3a68b0</color>
 
 </resources>

@@ -1,12 +1,14 @@
 package com.example.lifehack.presentation.AddLifeHack
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.lifehack.R
 import com.example.lifehack.data.entity.Auth.RequestToken
@@ -14,6 +16,8 @@ import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
 import com.example.lifehack.databinding.FragmentAddLifeHackBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
 import com.example.lifehack.presentation.adapter.AdapterTags.TagsAdapters
+import com.example.lifehack.presentation.adapter.intreface.OnClickTags
+import com.google.android.material.snackbar.Snackbar
 
 
 class AddLifeHackFragment : Fragment() {
@@ -44,6 +48,7 @@ class AddLifeHackFragment : Fragment() {
     ): View {
         _binding = FragmentAddLifeHackBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
+        setAdapter()
         return binding.root
     }
 
@@ -54,7 +59,6 @@ class AddLifeHackFragment : Fragment() {
             createPost()
         }
 
-        setAdapter()
     }
 
     private fun setAdapter(){
@@ -66,7 +70,13 @@ class AddLifeHackFragment : Fragment() {
         listTags.add("Техника")
 
         binding.listTags.layoutManager = GridLayoutManager(requireContext(), 4)
-        binding.listTags.adapter = TagsAdapters(listTags)
+        binding.listTags.adapter = TagsAdapters(listTags, object : OnClickTags{
+            override fun clickTags(tag: String) {
+                tags.clear()
+                tags.add(tag)
+                Log.d("GetTagSelected", tags.toString())
+            }
+        })
     }
 
     private fun createPost(){
@@ -79,8 +89,9 @@ class AddLifeHackFragment : Fragment() {
                 tags = tags
             )
             token?.let { createViewModel.createPost(post, it.accessToken) }
+            findNavController().popBackStack()
         } else {
-
+            Snackbar.make(requireView(), "Введите название и описание", Snackbar.LENGTH_SHORT).show()
         }
     }
 

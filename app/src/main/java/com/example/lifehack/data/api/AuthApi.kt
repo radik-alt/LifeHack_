@@ -1,15 +1,12 @@
 package com.example.lifehack.data.api
 
-import com.example.lifehack.data.Utils
+import com.example.lifehack.data.Utils.AUTH_SIGNOUT
 import com.example.lifehack.data.Utils.AUTH_URl
 import com.example.lifehack.data.Utils.SIGNUP_URl
-import com.example.lifehack.data.entity.Auth.AuthUser
-import com.example.lifehack.data.entity.Auth.RefreshToken
-import com.example.lifehack.data.entity.Auth.SingUpUser
-import com.example.lifehack.data.entity.Auth.RequestToken
-import retrofit2.Call
+import com.example.lifehack.data.entity.Auth.*
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
 
@@ -23,14 +20,19 @@ interface AuthApi {
 
 
     @Headers("Content-Type: application/json")
-    @POST("auth/signin")
+    @POST(AUTH_URl)
     suspend fun auth(
         @Body user: AuthUser
     ) : Response<RequestToken>
 
 
+    @GET()
+    suspend fun getImageUser(
 
-    @POST("auth/signout")
+    ): Response<ImageUser>
+
+
+    @POST(AUTH_SIGNOUT)
     suspend fun logout(
         @Body token: RefreshToken
     )

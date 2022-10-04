@@ -76,16 +76,7 @@ class RegisterFragment : Fragment() {
                 extension = "jpg",
                 avatar = uriImage?: ""
             )
-
-            when (val request = viewModelRegister.singUp(user)){
-                is Register.SuccessRegister -> {
-                    Log.d("RequestToken", request.requestToken.toString())
-                    findNavController().navigate(R.id.action_logInFragment_to_homeFragment)
-                }
-                is Register.ErrorRegister -> {
-                    Snackbar.make(requireView(), request.messageError, Snackbar.LENGTH_LONG).show()
-                }
-            }
+            viewModelRegister.singUp(user)
         } else {
             Snackbar.make(requireView(), "Введите данные во все поля...", Snackbar.LENGTH_LONG).show()
         }

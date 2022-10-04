@@ -22,7 +22,7 @@ class RatingFragment : Fragment() {
     private val binding: FragmentRatingBinding
         get() = _binding ?: throw RuntimeException("FragmentRatingBinding == null")
 
-    private var listHomePosts = ArrayList<Content>()
+    private var listHomePosts = ArrayList<Content?>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +41,7 @@ class RatingFragment : Fragment() {
 
     private fun setAdapter(){
         binding.listHomePosts.adapter = AdapterPostHome(listHomePosts, object: OnClickPost {
-            override fun selectItemPost(id: Int) {
+            override fun selectItemPost(post: Content) {
                 findNavController().navigate(R.id.action_homeFragment_to_postShowFragment)
             }
         })

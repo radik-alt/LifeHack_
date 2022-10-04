@@ -11,7 +11,7 @@ import com.example.lifehack.databinding.ItemPostBinding
 import com.example.lifehack.presentation.adapter.intreface.OnClickPost
 
 class AdapterPostHome(
-    private val listPost: ArrayList<Content>,
+    private val listPost: ArrayList<Content?>,
     private val onClickPost: OnClickPost
 ) : RecyclerView.Adapter<ViewHolderPostHome>() {
 
@@ -24,14 +24,17 @@ class AdapterPostHome(
 
     override fun onBindViewHolder(holder: ViewHolderPostHome, position: Int) {
 
-        holder.title.text = listPost[position].title
-        holder.desc.text = listPost[position].description
-        holder.stars.text = listPost[position].countStar.toString()
+        if (listPost[position] != null){
+            holder.title.text = listPost[position]?.title ?: ""
+            holder.desc.text = listPost[position]?.description ?: ""
+            holder.stars.text = listPost[position]?.countStar.toString()
+        }
+
 
 
 
         holder.itemView.setOnClickListener {
-            onClickPost.selectItemPost(position)
+            listPost[position]?.let { it1 -> onClickPost.selectItemPost(it1) }
         }
     }
 

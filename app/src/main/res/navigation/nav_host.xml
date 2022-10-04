@@ -62,7 +62,11 @@
         android:id="@+id/postShowFragment"
         android:name="com.example.lifehack.presentation.Home.viewPost.PostShowFragment"
         android:label="fragment_post_show"
-        tools:layout="@layout/fragment_post_show" />
+        tools:layout="@layout/fragment_post_show" >
+        <argument
+            android:name="contentOfPost"
+            app:argType="com.example.lifehack.data.entity.Posts.Content" />
+    </fragment>
     <fragment
         android:id="@+id/ratingFragment"
         android:name="com.example.lifehack.presentation.Rating.RatingFragment"

@@ -8,9 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lifehack.R
 import com.example.lifehack.databinding.ItemPostBinding
 import com.example.lifehack.databinding.ItemTagsBinding
+import com.example.lifehack.presentation.adapter.intreface.OnClickTags
 
 class TagsAdapters(
-    private val tags: ArrayList<String>
+    private val tags: ArrayList<String>,
+    private val onClickTags: OnClickTags
 ) : RecyclerView.Adapter<TagsViewHolder>() {
 
     private lateinit var context: Context
@@ -26,9 +28,59 @@ class TagsAdapters(
         holder.button.text = tags[position]
 
         when (position){
-//            0 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.button)
+            0 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.house_tag)
+            1 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.eat_tag)
+            2 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.sport_tag)
+            3 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.children_tag)
+            4 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.tech_tag)
+        }
+
+        holder.itemView.setOnClickListener {
+            when (position){
+                0 -> {
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.click_house_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.eat_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.sport_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.children_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.tech_tag)
+                    onClickTags.clickTags(tags[position])
+                }
+                1 -> {
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.house_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.clcik_eat_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.sport_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.children_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.tech_tag)
+                    onClickTags.clickTags(tags[position])
+                }
+                2 -> {
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.house_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.eat_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.click_sport_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.children_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.tech_tag)
+                    onClickTags.clickTags(tags[position])
+                }
+                3 -> {
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.house_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.eat_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.sport_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.click_children_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.tech_tag)
+                    onClickTags.clickTags(tags[position])
+                }
+                4 -> {
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.house_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.eat_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.sport_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.children_tag)
+                    holder.button.background = ContextCompat.getDrawable(context, R.drawable.click_tech_tag)
+                    onClickTags.clickTags(tags[position])
+                }
+            }
         }
     }
+
 
     override fun getItemCount(): Int = tags.size
 }

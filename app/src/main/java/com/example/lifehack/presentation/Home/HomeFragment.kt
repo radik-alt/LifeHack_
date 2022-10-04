@@ -14,6 +14,7 @@ import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Posts.Content
 import com.example.lifehack.data.entity.Posts.MainPost
 import com.example.lifehack.databinding.FragmentHomeBinding
+import com.example.lifehack.databinding.FragmentLogInAccountBinding
 import com.example.lifehack.databinding.FragmentLogInBinding
 import com.example.lifehack.presentation.adapter.AdapterPostHome
 import com.example.lifehack.presentation.adapter.intreface.OnClickPost
@@ -34,7 +35,7 @@ class HomeFragment : Fragment() {
 
     private val sharedViewModel : SharedTokenViewModel by activityViewModels()
     private var token: RequestToken?=null
-    private var listHomePosts = ArrayList<Content>()
+    private var listHomePosts = ArrayList<Content?>()
 
     override fun onResume() {
         super.onResume()
@@ -44,13 +45,14 @@ class HomeFragment : Fragment() {
             token?.let { tokenLet ->
                 homeViewModel.getPosts(tokenLet.accessToken)
             }
-            Log.d("TokenGet", token.toString())
         }
 
         homeViewModel.getPostsData().observe(viewLifecycleOwner){
-            val content = it.content
             listHomePosts.clear()
-            content?.let { it1 -> listHomePosts.addAll(it1) }
+            val content = it.content
+            content?.let { it1 ->
+                listHomePosts.addAll(it1)
+            }
             setAdapter()
             loader(false)
         }
@@ -63,7 +65,6 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         showBottomView()
-        setAdapter()
         return binding.root
     }
 
@@ -97,8 +98,9 @@ class HomeFragment : Fragment() {
 
     private fun setAdapter(){
         binding.listHomePosts.adapter = AdapterPostHome(listHomePosts, object: OnClickPost{
-            override fun selectItemPost(id: Int) {
-                findNavController().navigate(R.id.action_homeFragment_to_postShowFragment)
+            override fun selectItemPost(post: Content) {
+                val action = HomeFragmentDirections.actionHomeFragmentToPostShowFragment(post)
+                findNavController().navigate(action)
             }
         })
     }

@@ -1,6 +1,8 @@
 package com.example.lifehack.presentation.adapter.intreface
 
+import com.example.lifehack.data.entity.Posts.Content
+
 interface OnClickPost {
 
-    fun selectItemPost(id: Int)
+    fun selectItemPost(post: Content)
 }
