@@ -1,6 +1,7 @@
 package com.example.lifehack.presentation.Account
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,10 +19,17 @@ class RegisterViewModel(
     private val repositoryApi = ApiRepository()
     private val requestData = MutableLiveData<RequestToken>()
 
+    private val imageUser = MutableLiveData<String>()
 
     fun singUp(user: SingUpUser){
         viewModelScope.launch {
             repositoryApi.singUp(user)
         }
+    }
+
+    fun getImageUser() : LiveData<String> = imageUser
+
+    fun setImageUser(image: String){
+        imageUser.value = image
     }
 }

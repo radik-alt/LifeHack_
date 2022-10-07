@@ -30,9 +30,6 @@ class AdapterPostHome(
             holder.stars.text = listPost[position]?.countStar.toString()
         }
 
-
-
-
         holder.itemView.setOnClickListener {
             listPost[position]?.let { it1 -> onClickPost.selectItemPost(it1) }
         }

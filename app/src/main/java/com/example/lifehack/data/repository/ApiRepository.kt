@@ -4,10 +4,10 @@ import com.example.lifehack.data.api.ApiDataConnect
 import com.example.lifehack.data.entity.Auth.AuthUser
 import com.example.lifehack.data.entity.Auth.SingUpUser
 import com.example.lifehack.data.entity.Auth.RequestToken
+import com.example.lifehack.data.entity.Comments.AddComment.AddComment
 import com.example.lifehack.data.entity.Comments.Comments
 import com.example.lifehack.data.entity.Posts.MainPost
 import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
-import com.example.lifehack.data.entity.Posts.OnePost.RequestCreatePost.RequestCreatePost
 import retrofit2.Response
 
 class ApiRepository {
@@ -30,6 +30,10 @@ class ApiRepository {
 
     suspend fun getCommentOfPost(postId: String, token: String):Response<Comments>{
         return ApiDataConnect.API_POSTS.getCommentsOfPostId(postId, token)
+    }
+
+    suspend fun postCommentOfPost(token: String, comment:AddComment){
+        ApiDataConnect.apiComments.postCommentOfPost(token, comment)
     }
 
 }

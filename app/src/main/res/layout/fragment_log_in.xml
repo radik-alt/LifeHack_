@@ -70,6 +70,7 @@
             android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/registerImage"
             android:background="@drawable/input_edit"
             android:layout_marginTop="20sp"
             android:src="@drawable/ic_launcher_foreground"

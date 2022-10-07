@@ -44,10 +44,12 @@
         tools:layout_editor_absoluteX="20dp">
 
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imagePost"
             android:layout_width="130sp"
             android:layout_height="130sp"
-            android:background="@drawable/input_edit"
+            app:civ_border_color="@color/primaryColor"
+            app:civ_border_width="1sp"
             android:src="@drawable/ic_launcher_foreground" />
 
         <com.google.android.material.textfield.TextInputLayout

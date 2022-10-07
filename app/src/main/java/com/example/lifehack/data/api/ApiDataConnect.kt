@@ -39,4 +39,8 @@ object ApiDataConnect {
     val API_POSTS : PostsApi by lazy {
         retrofit.create(PostsApi::class.java)
     }
+
+    val apiComments : CommentsApi by lazy {
+        retrofit.create(CommentsApi::class.java)
+    }
 }

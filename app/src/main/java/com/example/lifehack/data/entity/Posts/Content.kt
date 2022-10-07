@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Content(
     val countStar: Int,
     val description: String,
-    val tags: List<String>,
+    val tags: List<String>?,
     val post_id: String,
     val title: String
 ): Parcelable

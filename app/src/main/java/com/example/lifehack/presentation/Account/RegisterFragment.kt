@@ -1,13 +1,16 @@
 package com.example.lifehack.presentation.Account
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.lifehack.R
 import com.example.lifehack.data.entity.Auth.SingUpUser
 import com.example.lifehack.databinding.FragmentLogInBinding
@@ -28,6 +31,13 @@ class RegisterFragment : Fragment() {
 
     private var uriImage: String?=null
 
+    override fun onResume() {
+        super.onResume()
+        viewModelRegister.getImageUser().observe(viewLifecycleOwner){
+            uriImage = it
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +57,14 @@ class RegisterFragment : Fragment() {
 
         binding.backToAuthFragment.setOnClickListener {
             findNavController().popBackStack()
+        }
+
+        binding.registerImage.setOnClickListener {
+            val imageIntent = Intent().apply {
+                action = Intent.ACTION_GET_CONTENT
+                type = "image/*"
+            }
+            getImage.launch(imageIntent)
         }
     }
 
@@ -79,6 +97,19 @@ class RegisterFragment : Fragment() {
             viewModelRegister.singUp(user)
         } else {
             Snackbar.make(requireView(), "Введите данные во все поля...", Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    private val getImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+
+        val image = it.data?.data
+        Glide.with(requireContext())
+            .load(image)
+            .error(R.drawable.ic_launcher_foreground)
+            .into(binding.registerImage)
+
+        if (image != null){
+            viewModelRegister.setImageUser(image.toString())
         }
     }
 
