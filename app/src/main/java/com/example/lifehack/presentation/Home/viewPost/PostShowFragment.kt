@@ -13,12 +13,14 @@ import androidx.navigation.fragment.navArgs
 import com.example.lifehack.R
 import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Comments.AddComment.AddComment
+import com.example.lifehack.data.entity.Comments.ChangeComment.ChangeComment
 import com.example.lifehack.data.entity.Comments.Comments
 import com.example.lifehack.data.entity.Comments.Data
 import com.example.lifehack.databinding.FragmentHomeBinding
 import com.example.lifehack.databinding.FragmentPostShowBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
 import com.example.lifehack.presentation.adapter.AdapterComments.AdapterComments
+import com.example.lifehack.presentation.adapter.intreface.OnClickComment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.lang.RuntimeException
 
@@ -78,7 +80,15 @@ class PostShowFragment : Fragment() {
         }
 
         binding.sendComment.setOnClickListener {
-            sendComment()
+            if (postViewModel.getIsEditComment().value == true){
+                postViewModel.showSnackBar(requireView(), "Обновление комментария...")
+            } else {
+                sendComment()
+            }
+        }
+
+        binding.subscribe.setOnClickListener {
+            subscription()
         }
 
     }
@@ -96,7 +106,18 @@ class PostShowFragment : Fragment() {
     private fun setAdapterComments(){
         if (comments != null){
             val dataComments = comments?.content?.get(0)?.data
-            val adapter = dataComments?.let { AdapterComments(it) }
+            val adapter = dataComments?.let { listData ->
+                AdapterComments(listData, object : OnClickComment{
+                    override fun onClickComment(comment: Data, view: Int) {
+                        when (view) {
+                            1 -> {
+                                postViewModel.setIsEditComment(true)
+                                updateComment(comment)
+                            }
+                        }
+                    }
+                })
+            }
             binding.commentRecycler.adapter = adapter
         }
     }
@@ -114,14 +135,33 @@ class PostShowFragment : Fragment() {
             )
             token?.let { postViewModel.addComment(comment, it.accessToken) }
             getComments()
+            postViewModel.setIsEditComment(false)
         } else {
             postViewModel.showSnackBar(requireView(), "Введите комментарий...")
         }
     }
 
-    private fun updateComment(){
+    private fun updateComment(comment: Data){
+
+        binding.textComment.setText(comment.comment)
+        val changeCommentText = binding.textComment.text.toString()
+        if (postViewModel.validComment(changeCommentText, comment)){
+            val changeComment = token?.let {
+                ChangeComment(
+                    id = comment.id,
+                    comment = changeCommentText,
+                    post_id = it.accessToken
+                )
+            }
+            changeComment?.let {
+                postViewModel.changeComment(
+                    it
+                )
+            }
+        }
 
     }
+
 
     private fun setStarsPost(){
 

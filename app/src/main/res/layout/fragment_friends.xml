@@ -8,6 +8,35 @@
     tools:context=".presentation.Friends.FriendsFragment">
 
 
+    <ProgressBar
+        android:id="@+id/progressFriends"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:text="Быстрее заводи друзей :)"
+        android:id="@+id/errorLoaderFriends"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+
+
     <include
         android:id="@+id/toolbarHome"
         layout="@layout/toolbar_home"

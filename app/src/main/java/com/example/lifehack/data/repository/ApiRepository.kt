@@ -6,6 +6,7 @@ import com.example.lifehack.data.entity.Auth.SingUpUser
 import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Comments.AddComment.AddComment
 import com.example.lifehack.data.entity.Comments.Comments
+import com.example.lifehack.data.entity.Follow.RequestFollow
 import com.example.lifehack.data.entity.Posts.MainPost
 import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
 import retrofit2.Response
@@ -34,6 +35,10 @@ class ApiRepository {
 
     suspend fun postCommentOfPost(token: String, comment:AddComment){
         ApiDataConnect.apiComments.postCommentOfPost(token, comment)
+    }
+
+    suspend fun getFollowUsers(token:String):Response<RequestFollow>{
+        return ApiDataConnect.apiFollow.getFollowUsers(token)
     }
 
 }
