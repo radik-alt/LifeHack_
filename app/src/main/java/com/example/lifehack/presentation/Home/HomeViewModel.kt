@@ -5,19 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.lifehack.data.entity.Posts.Content
 import com.example.lifehack.data.entity.Posts.MainPost
-import com.example.lifehack.data.repository.ApiRepository
+import com.example.lifehack.data.repository.ApiRepositoryImpl
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HomeViewModel(
 
 ) : ViewModel(){
 
-    private val apiRepository = ApiRepository()
+    private val apiRepository = ApiRepositoryImpl()
     private val postMain = MutableLiveData<MainPost>()
 
     fun getPosts(token:String){

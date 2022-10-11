@@ -5,13 +5,14 @@ import com.example.lifehack.data.entity.Auth.AuthUser
 import com.example.lifehack.data.entity.Auth.SingUpUser
 import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Comments.AddComment.AddComment
+import com.example.lifehack.data.entity.Comments.ChangeComment.ChangeComment
 import com.example.lifehack.data.entity.Comments.Comments
 import com.example.lifehack.data.entity.Follow.RequestFollow
 import com.example.lifehack.data.entity.Posts.MainPost
 import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
 import retrofit2.Response
 
-class ApiRepository {
+class ApiRepositoryImpl {
 
     suspend fun singUp(singUpUser: SingUpUser) : Response<RequestToken>{
         return ApiDataConnect.api.singUp(singUpUser)
@@ -30,11 +31,15 @@ class ApiRepository {
     }
 
     suspend fun getCommentOfPost(postId: String, token: String):Response<Comments>{
-        return ApiDataConnect.API_POSTS.getCommentsOfPostId(postId, token)
+        return ApiDataConnect.apiComments.getCommentsOfPostId(postId, token)
     }
 
     suspend fun postCommentOfPost(token: String, comment:AddComment){
         ApiDataConnect.apiComments.postCommentOfPost(token, comment)
+    }
+
+    suspend fun changeCommentOfPost(token:String, comment:ChangeComment){
+        ApiDataConnect.apiComments.changeCommentOfPost(token, comment)
     }
 
     suspend fun getFollowUsers(token:String):Response<RequestFollow>{

@@ -43,7 +43,6 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
         tools:layout_editor_absoluteX="20dp">
 
-
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imagePost"
             android:layout_width="130sp"
@@ -119,6 +118,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listTags"
+            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10sp"

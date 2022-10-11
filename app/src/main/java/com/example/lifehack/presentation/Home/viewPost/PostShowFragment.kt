@@ -37,17 +37,15 @@ class PostShowFragment : Fragment() {
     }
 
     private val sharedViewModel : SharedTokenViewModel by activityViewModels()
-    private var token: RequestToken?=null
     private var comments: Comments?=null
 
 
     override fun onResume() {
         super.onResume()
         sharedViewModel.getToken().observe(viewLifecycleOwner){
-            token = it
+            postViewModel.setToken(it.accessToken)
             getComments()
         }
-        getComments()
     }
 
     override fun onCreateView(
@@ -55,19 +53,7 @@ class PostShowFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentPostShowBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
-        hideBottomView()
         return binding.root
-    }
-
-    private fun hideBottomView(){
-        val fragmentActivity = activity
-        if (activity != null){
-            val bottom = fragmentActivity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-            if (bottom != null && bottom.visibility == View.VISIBLE) {
-                bottom.visibility = View.GONE
-            }
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,6 +67,7 @@ class PostShowFragment : Fragment() {
 
         binding.sendComment.setOnClickListener {
             if (postViewModel.getIsEditComment().value == true){
+                updateComment()
                 postViewModel.showSnackBar(requireView(), "Обновление комментария...")
             } else {
                 sendComment()
@@ -94,12 +81,10 @@ class PostShowFragment : Fragment() {
     }
 
     private fun getComments(){
+        postViewModel.getComments(navPost.contentOfPost.post_id)
         postViewModel.getCommentsData().observe(viewLifecycleOwner){
             comments = it
             setAdapterComments()
-        }
-        token?.let { tokenLet ->
-            postViewModel.getComments(navPost.contentOfPost.post_id, tokenLet.refreshToken)
         }
     }
 
@@ -110,9 +95,12 @@ class PostShowFragment : Fragment() {
                 AdapterComments(listData, object : OnClickComment{
                     override fun onClickComment(comment: Data, view: Int) {
                         when (view) {
+                            0 -> {
+                                postViewModel.setIsEditComment(false)
+                            }
                             1 -> {
                                 postViewModel.setIsEditComment(true)
-                                updateComment(comment)
+                                postViewModel.selectCommentChange.value = comment
                             }
                         }
                     }
@@ -128,46 +116,47 @@ class PostShowFragment : Fragment() {
 
     private fun sendComment(){
         val textComment = binding.textComment.text.toString()
-        if (textComment.isNotEmpty()){
+        if (postViewModel.validCommentSend(textComment)){
             val comment = AddComment(
                 comment = textComment,
-                question_id = navPost.contentOfPost.post_id
+                post_id = navPost.contentOfPost.post_id
             )
-            token?.let { postViewModel.addComment(comment, it.accessToken) }
+            postViewModel.addComment(comment)
             getComments()
-            postViewModel.setIsEditComment(false)
+            binding.textComment.text?.clear()
         } else {
             postViewModel.showSnackBar(requireView(), "Введите комментарий...")
         }
     }
 
-    private fun updateComment(comment: Data){
+    private fun updateComment(){
 
-        binding.textComment.setText(comment.comment)
+        val comment = postViewModel.selectCommentChange.value
+        binding.textComment.setText(comment?.comment ?: "")
         val changeCommentText = binding.textComment.text.toString()
-        if (postViewModel.validComment(changeCommentText, comment)){
-            val changeComment = token?.let {
-                ChangeComment(
-                    id = comment.id,
-                    comment = changeCommentText,
-                    post_id = it.accessToken
-                )
-            }
-            changeComment?.let {
-                postViewModel.changeComment(
-                    it
-                )
-            }
+
+        val validChange = comment?.let { postViewModel.validCommentChange(changeCommentText, it) }
+        if (validChange == true){
+            val changeComments = ChangeComment(
+                id = comment.id,
+                comment = changeCommentText,
+                post_id = navPost.contentOfPost.post_id
+            )
+            postViewModel.changeComment(changeComments)
+            binding.textComment.text?.clear()
+            postViewModel.setIsEditComment(false)
         }
+    }
+
+    private fun getStarsOfPost(){
 
     }
 
-
-    private fun setStarsPost(){
+    private fun setMyStarsPost(){
 
     }
 
-    private fun updateStarsPost(){
+    private fun updateMyStarsPost(){
 
     }
 

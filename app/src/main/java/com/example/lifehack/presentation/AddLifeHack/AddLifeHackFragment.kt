@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.example.lifehack.R
 import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
+import com.example.lifehack.data.entity.Tags
 import com.example.lifehack.databinding.FragmentAddLifeHackBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
 import com.example.lifehack.presentation.adapter.AdapterTags.TagsAdapters
@@ -33,17 +34,16 @@ class AddLifeHackFragment : Fragment() {
 
     private val tags = ArrayList<String>()
     private val filesImage = ArrayList<String>()
+
     private val createViewModel : CreatePostViewModel by lazy {
         ViewModelProvider(this)[CreatePostViewModel::class.java]
     }
-
     private val tokenViewModel : SharedTokenViewModel by activityViewModels()
-    private var token: RequestToken ?= null
 
     override fun onResume() {
         super.onResume()
         tokenViewModel.getToken().observe(viewLifecycleOwner){
-            token = it
+            createViewModel.setToken(it)
         }
         getSelectedImage()
         getSelectedTags()
@@ -76,18 +76,22 @@ class AddLifeHackFragment : Fragment() {
     }
 
     private fun setAdapter(){
-        val listTags = ArrayList<String>()
-        listTags.add("Дома")
-        listTags.add("Еда")
-        listTags.add("Спорт")
-        listTags.add("Дети")
-        listTags.add("Техника")
+        val listTags = ArrayList<Tags>()
+        listTags.add(Tags("Дома", false))
+        listTags.add(Tags("Еда", false))
+        listTags.add(Tags("Спорт", false))
+        listTags.add(Tags("Дети", false))
+        listTags.add(Tags("Техника", false))
 
         binding.listTags.layoutManager = GridLayoutManager(requireContext(), 4)
         binding.listTags.adapter = TagsAdapters(listTags, object : OnClickTags{
-            override fun clickTags(tag: String) {
-                createViewModel.addTags(tag)
-                Log.d("GetTagSelected", tags.toString())
+            override fun clickTags(tag: Tags) {
+                if (tag.select){
+                    createViewModel.deleteTags(tag)
+                } else {
+                    createViewModel.addTags(tag)
+                }
+                Log.d("GetTagSelected", createViewModel.getTags().value.toString())
             }
         })
     }
@@ -109,15 +113,16 @@ class AddLifeHackFragment : Fragment() {
 
     private fun createPost(){
         val title = binding.title.text.toString()
-        val desc = binding.description.text.toString()
-        if (valid(title, desc)){
+        val descriptionPost = binding.description.text.toString()
+
+        if (createViewModel.validCreatePost(title, descriptionPost)){
             val post = CreatePost(
                 title = title,
-                description = desc,
+                description = descriptionPost,
                 tags = tags,
                 files = filesImage
             )
-            token?.let { createViewModel.createPost(post, it.accessToken) }
+            createViewModel.createPost(post)
         } else {
             Snackbar.make(requireView(), "Введите название и описание", Snackbar.LENGTH_SHORT).show()
         }
@@ -135,13 +140,6 @@ class AddLifeHackFragment : Fragment() {
             tags.clear()
             tags.addAll(it)
         }
-    }
-
-    private fun valid(title:String, description: String): Boolean{
-        if (title.isNotEmpty() && description.isNotEmpty()) {
-            return true
-        }
-        return false
     }
 
     override fun onDestroyView() {

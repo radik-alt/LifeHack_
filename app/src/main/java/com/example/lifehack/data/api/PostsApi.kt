@@ -24,9 +24,4 @@ interface PostsApi {
     )
 
 
-    @GET("comment/post/{postId}")
-    suspend fun getCommentsOfPostId(
-        @Path("postId") postId: String,
-        @Header("Authorization") Bearer: String
-    ) : Response<Comments>
 }

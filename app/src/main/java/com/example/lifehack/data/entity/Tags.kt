@@ -1,5 +1,6 @@
 package com.example.lifehack.data.entity
 
-enum class Tags {
-    Дома,Еда,Спорт,Дети,Техника
-}
+data class Tags(
+    val tag:String,
+    var select: Boolean = false
+)

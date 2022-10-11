@@ -1,7 +1,6 @@
 package com.example.lifehack.presentation.Account
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +11,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.lifehack.R
 import com.example.lifehack.data.entity.Auth.AuthUser
 import com.example.lifehack.databinding.FragmentLogInAccountBinding
-import com.example.lifehack.databinding.FragmentLogInBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.snackbar.Snackbar
 import java.lang.RuntimeException
 
 
@@ -51,21 +48,27 @@ class LogInAccountFragment : Fragment() {
         binding.auth.setOnClickListener {
             val login = binding.email.text.toString()
             val password = binding.password.text.toString()
-            if (valid(login, password)){
+            if (loginViewModel.valid(login, password)){
+                loader(true)
                 val user = AuthUser(
                     login = login,
                     pass = password
                 )
                 loginViewModel.authUser(user)
-                loader(true)
-                loginViewModel.requestToken.observe(viewLifecycleOwner){
-                    Log.d("RequestTokenAuth", it.toString())
-                    sharedViewModel.setToken(it)
+                loginViewModel.requestAuthData.observe(viewLifecycleOwner){
                     loader(false)
-                    findNavController().navigate(R.id.action_logInAccountFragment_to_homeFragment)
+                    when (it){
+                        is Auth.SuccessAuth -> {
+                            sharedViewModel.setToken(it.requestToken)
+                            findNavController().navigate(R.id.action_logInAccountFragment_to_homeFragment)
+                        }
+                        is Auth.ErrorAuth -> {
+                            loginViewModel.showSnackBar(requireView(), it.errorMessage)
+                        }
+                    }
                 }
             } else {
-                Snackbar.make(requireView(), "Введите логин и пароль...", Snackbar.LENGTH_LONG).show()
+                loginViewModel.showSnackBar(requireView(), "Введите логин и пароль...")
             }
         }
     }
@@ -78,10 +81,6 @@ class LogInAccountFragment : Fragment() {
             binding.authText.visibility = View.VISIBLE
             binding.authProgress.visibility = View.GONE
         }
-    }
-
-    private fun valid(login:String, password: String):Boolean{
-        return login.isNotEmpty() && password.isNotEmpty()
     }
 
     private fun hideBottomView(){

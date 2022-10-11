@@ -1,44 +1,52 @@
 package com.example.lifehack.presentation.AddLifeHack
 
-import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
-import com.example.lifehack.data.repository.ApiRepository
+import com.example.lifehack.data.entity.Tags
+import com.example.lifehack.data.repository.ApiRepositoryImpl
 import kotlinx.coroutines.launch
 
 class CreatePostViewModel(
 
 ): ViewModel() {
 
-    private val apiRepository = ApiRepository()
+    private val apiRepository = ApiRepositoryImpl()
 
-    private var tags = MutableLiveData<ArrayList<String>>()
-    private var image = MutableLiveData<ArrayList<String>>()
+    private var tagsList = MutableLiveData<ArrayList<String>>()
+    private var imageList = MutableLiveData<ArrayList<String>>()
     private var title = MutableLiveData<String>()
     private var description = MutableLiveData<String>()
 
-    fun createPost(post: CreatePost, token: String){
+    private var token:String ?= null
+
+    fun setToken(tokenData: RequestToken){
+        token = tokenData.accessToken
+    }
+
+    fun createPost(post: CreatePost){
         viewModelScope.launch {
-            apiRepository.createPost(post, "Bearer $token")
+            if (token != null){
+                apiRepository.createPost(post, "Bearer $token")
+            }
         }
     }
 
-    fun getImage():LiveData<ArrayList<String>> = image
-    fun getTags():LiveData<ArrayList<String>> = tags
+    fun getImage():LiveData<ArrayList<String>> = imageList
+    fun getTags():LiveData<ArrayList<String>> = tagsList
 
     fun addImage(imageData: String){
-        image.value?.add(imageData)
+        imageList.value?.add(imageData)
     }
 
-    fun addTags(tagsData: String){
-        tags.value?.add(tagsData)
+    fun addTags(tagsData: Tags){
+        tagsList.value?.add(tagsData.tag)
     }
 
-    fun deleteTags(tagsData: String){
+    fun deleteTags(tagsData: Tags){
 
     }
 
@@ -52,5 +60,14 @@ class CreatePostViewModel(
 
     fun setDescription(descData: String){
         description.value = descData
+    }
+
+
+
+    fun validCreatePost(title:String, description: String): Boolean {
+        if (title.isNotEmpty() && description.isNotEmpty()) {
+            return true
+        }
+        return false
     }
 }
