@@ -47,4 +47,8 @@ object ApiDataConnect {
     val apiFollow : FollowApi by lazy {
         retrofit.create(FollowApi::class.java)
     }
+
+    val apiStars : StarsApi by lazy {
+        retrofit.create(StarsApi::class.java)
+    }
 }

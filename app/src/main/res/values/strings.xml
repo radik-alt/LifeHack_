@@ -22,18 +22,15 @@
     <string name="save">Сохарнить</string>
 
     <string-array name="spinnerTag">
-        <item>Тег</item>
-        <item>Тег</item>
-        <item>Тег</item>
-        <item>Тег</item>
-        <item>Тег</item>
+        <item>Дома</item>
+        <item>Еда</item>
+        <item>Спорт</item>
+        <item>Дети</item>
+        <item>Техника</item>
     </string-array>
 
     <string-array name="sortPosts">
-        <item>Сортировать</item>
-        <item>Сортировать</item>
-        <item>Сортировать</item>
-        <item>Сортировать</item>
-        <item>Сортировать</item>
+        <item>От первого к последнему</item>
+        <item>От последнего к первому</item>
     </string-array>
 </resources>

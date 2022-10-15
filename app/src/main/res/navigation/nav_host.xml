@@ -76,10 +76,23 @@
         android:id="@+id/friendsFragment"
         android:name="com.example.lifehack.presentation.Friends.FriendsFragment"
         android:label="fragment_friends"
-        tools:layout="@layout/fragment_friends" />
+        tools:layout="@layout/fragment_friends" >
+        <action
+            android:id="@+id/action_friendsFragment_to_viewFollowerFragment"
+            app:destination="@id/viewFollowerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.lifehack.presentation.Search.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search" />
+    <fragment
+        android:id="@+id/viewFollowerFragment"
+        android:name="com.example.lifehack.presentation.Friends.ViewFirends.ViewFollowerFragment"
+        android:label="fragment_view_follower"
+        tools:layout="@layout/fragment_view_follower" >
+        <argument
+            android:name="dataUser"
+            app:argType="com.example.lifehack.data.entity.Follow.Data" />
+    </fragment>
 </navigation>

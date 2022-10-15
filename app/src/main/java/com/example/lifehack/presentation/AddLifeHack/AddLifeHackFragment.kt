@@ -7,16 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.example.lifehack.R
-import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
 import com.example.lifehack.data.entity.Tags
 import com.example.lifehack.databinding.FragmentAddLifeHackBinding
@@ -132,6 +128,10 @@ class AddLifeHackFragment : Fragment() {
         createViewModel.getImage().observe(viewLifecycleOwner){
             filesImage.clear()
             filesImage.addAll(it)
+            Glide.with(requireContext())
+                .load(filesImage[0])
+                .error(R.drawable.ic_launcher_foreground)
+                .into(binding.imagePost)
         }
     }
 

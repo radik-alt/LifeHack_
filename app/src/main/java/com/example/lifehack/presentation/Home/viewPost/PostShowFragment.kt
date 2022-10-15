@@ -1,7 +1,6 @@
 package com.example.lifehack.presentation.Home.viewPost
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,18 +9,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.lifehack.R
-import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Comments.AddComment.AddComment
 import com.example.lifehack.data.entity.Comments.ChangeComment.ChangeComment
 import com.example.lifehack.data.entity.Comments.Comments
 import com.example.lifehack.data.entity.Comments.Data
-import com.example.lifehack.databinding.FragmentHomeBinding
 import com.example.lifehack.databinding.FragmentPostShowBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
 import com.example.lifehack.presentation.adapter.AdapterComments.AdapterComments
 import com.example.lifehack.presentation.adapter.intreface.OnClickComment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.lang.RuntimeException
 
 class PostShowFragment : Fragment() {
@@ -135,8 +130,10 @@ class PostShowFragment : Fragment() {
         binding.textComment.setText(comment?.comment ?: "")
         val changeCommentText = binding.textComment.text.toString()
 
-        val validChange = comment?.let { postViewModel.validCommentChange(changeCommentText, it) }
-        if (validChange == true){
+        val validChangeComment = comment?.let {
+            postViewModel.validCommentChange(changeCommentText, it)
+        }
+        if (validChangeComment == true){
             val changeComments = ChangeComment(
                 id = comment.id,
                 comment = changeCommentText,
@@ -146,6 +143,10 @@ class PostShowFragment : Fragment() {
             binding.textComment.text?.clear()
             postViewModel.setIsEditComment(false)
         }
+    }
+
+    private fun deleteComment(){
+
     }
 
     private fun getStarsOfPost(){

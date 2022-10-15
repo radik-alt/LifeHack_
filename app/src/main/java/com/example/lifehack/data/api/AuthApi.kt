@@ -12,7 +12,6 @@ import retrofit2.http.POST
 
 interface AuthApi {
 
-
     @POST(SIGNUP_URl)
     suspend fun singUp(
         @Body user: SingUpUser
@@ -26,17 +25,15 @@ interface AuthApi {
     ) : Response<RequestToken>
 
 
-    @GET()
-    suspend fun getImageUser(
-
-    ): Response<ImageUser>
-
-
     @POST(AUTH_SIGNOUT)
     suspend fun logout(
         @Body token: RefreshToken
     )
 
 
+    @POST("auth/refresh")
+    suspend fun refreshToken(
+        @Body token: RefreshToken
+    )
 
 }

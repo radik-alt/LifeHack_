@@ -8,12 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.lifehack.R
 import com.example.lifehack.data.entity.Auth.SingUpUser
 import com.example.lifehack.databinding.FragmentLogInBinding
+import com.example.lifehack.presentation.Home.SharedTokenViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import java.lang.RuntimeException
@@ -25,6 +27,8 @@ class RegisterFragment : Fragment() {
     private val binding:FragmentLogInBinding
         get() = _binding ?: throw RuntimeException("FragmentLogInBinding == null")
 
+
+    private val sharedViewModel : SharedTokenViewModel by activityViewModels()
     private val viewModelRegister : RegisterViewModel by lazy {
         ViewModelProvider(this)[RegisterViewModel::class.java]
     }
@@ -33,9 +37,7 @@ class RegisterFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModelRegister.getImageUser().observe(viewLifecycleOwner){
-            uriImage = it
-        }
+        getImageData()
     }
 
     override fun onCreateView(
@@ -84,7 +86,7 @@ class RegisterFragment : Fragment() {
         val email = binding.email.text.toString()
         val password = binding.password.text.toString()
 
-        if (valid(firstName, lastName, email, password)){
+        if (viewModelRegister.valid(firstName, lastName, email, password)){
             val user = SingUpUser(
                 first_name = firstName,
                 last_name = lastName,
@@ -95,34 +97,45 @@ class RegisterFragment : Fragment() {
                 avatar = uriImage?: ""
             )
             viewModelRegister.singUp(user)
+            viewModelRegister.requestRegistertData.observe(viewLifecycleOwner){
+                when (it){
+                    is Register.SuccessRegister ->{
+                        sharedViewModel.setToken(it.requestToken)
+                        findNavController().navigate(R.id.action_logInFragment_to_homeFragment)
+                    }
+                    is Register.ErrorRegister -> {
+                        viewModelRegister.showSnackBar(requireView(), it.error)
+                    }
+                }
+            }
         } else {
-            Snackbar.make(requireView(), "Введите данные во все поля...", Snackbar.LENGTH_LONG).show()
+            viewModelRegister.showSnackBar(requireView(), "Не все поля заполнены...")
         }
     }
 
     private val getImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
 
         val image = it.data?.data
-        Glide.with(requireContext())
-            .load(image)
-            .error(R.drawable.ic_launcher_foreground)
-            .into(binding.registerImage)
-
         if (image != null){
-            viewModelRegister.setImageUser(image.toString())
+            setImage(image.toString())
+            getImageData()
         }
     }
 
-    private fun valid(firstName:String, lastName: String, email:String, password:String): Boolean {
-        if (firstName.isNotBlank() &&
-            lastName.isNotBlank() &&
-            email.isNotBlank() &&
-            password.isNotBlank()
-        ) {
-            return true
-        }
-        return false
+    private fun setImage(image:String){
+        viewModelRegister.setImageUser(image)
     }
+
+    private fun getImageData(){
+        viewModelRegister.getImageUser().observe(viewLifecycleOwner){
+            uriImage = it
+            Glide.with(requireContext())
+                .load(uriImage)
+                .error(R.drawable.ic_launcher_foreground)
+                .into(binding.registerImage)
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

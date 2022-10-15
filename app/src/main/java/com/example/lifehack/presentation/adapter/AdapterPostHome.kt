@@ -4,11 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.lifehack.data.entity.Posts.Content
-import com.example.lifehack.data.entity.Posts.MainPost
 import com.example.lifehack.databinding.ItemPostBinding
+import com.example.lifehack.presentation.adapter.AdapterTags.TagsAdapters
+import com.example.lifehack.presentation.adapter.AdapterTags.TagsOnPostAdapter.TagsPostAdapter
 import com.example.lifehack.presentation.adapter.intreface.OnClickPost
+import com.example.lifehack.presentation.adapter.intreface.OnClickTags
 
 class AdapterPostHome(
     private val listPost: ArrayList<Content?>,
@@ -32,6 +33,11 @@ class AdapterPostHome(
 
         holder.itemView.setOnClickListener {
             listPost[position]?.let { it1 -> onClickPost.selectItemPost(it1) }
+        }
+
+        val tags = listPost[position]?.tags
+        if (tags?.isNotEmpty() == true){
+            holder.tagsAdapter.adapter = TagsPostAdapter(tags)
         }
     }
 

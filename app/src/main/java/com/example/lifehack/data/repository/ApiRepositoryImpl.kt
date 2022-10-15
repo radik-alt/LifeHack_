@@ -2,6 +2,7 @@ package com.example.lifehack.data.repository
 
 import com.example.lifehack.data.api.ApiDataConnect
 import com.example.lifehack.data.entity.Auth.AuthUser
+import com.example.lifehack.data.entity.Auth.RefreshToken
 import com.example.lifehack.data.entity.Auth.SingUpUser
 import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Comments.AddComment.AddComment
@@ -10,6 +11,8 @@ import com.example.lifehack.data.entity.Comments.Comments
 import com.example.lifehack.data.entity.Follow.RequestFollow
 import com.example.lifehack.data.entity.Posts.MainPost
 import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
+import com.example.lifehack.data.entity.Stars.GetStars
+import com.example.lifehack.data.entity.Stars.PostStars
 import retrofit2.Response
 
 class ApiRepositoryImpl {
@@ -20,6 +23,10 @@ class ApiRepositoryImpl {
 
     suspend fun auth(user:AuthUser) : Response<RequestToken> {
         return ApiDataConnect.api.auth(user)
+    }
+
+    suspend fun sungOut(token: RefreshToken){
+        ApiDataConnect.api.logout(token)
     }
 
     suspend fun getMainPost(bearer: String):Response<MainPost>{
@@ -42,8 +49,24 @@ class ApiRepositoryImpl {
         ApiDataConnect.apiComments.changeCommentOfPost(token, comment)
     }
 
+    suspend fun deleteCommentOfPost(idComment:String, token:String){
+        ApiDataConnect.apiComments.deleteCommentOfPost(idComment, token)
+    }
+
     suspend fun getFollowUsers(token:String):Response<RequestFollow>{
         return ApiDataConnect.apiFollow.getFollowUsers(token)
+    }
+
+    suspend fun deleteFollowUser(token: String, followId:String){
+        ApiDataConnect.apiFollow.deleteFollowUser(token, followId)
+    }
+
+    suspend fun setStarsOfPost(token: String, stars: PostStars){
+        ApiDataConnect.apiStars.postStarsOfPost(token, stars)
+    }
+
+    suspend fun getStarsOfPost(id: String, token: String):Response<GetStars>{
+        return ApiDataConnect.apiStars.getStarsOfPost(id, token)
     }
 
 }

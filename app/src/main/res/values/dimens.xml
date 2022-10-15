@@ -5,4 +5,5 @@
     <dimen name="size_header_add_post">26sp</dimen>
     <dimen name="radius_tags">30sp</dimen>
     <dimen name="width_radius_tag">1sp</dimen>
+    <dimen name="padding_fragment">10sp</dimen>
 </resources>

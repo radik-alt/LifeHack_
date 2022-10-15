@@ -46,30 +46,34 @@ class LogInAccountFragment : Fragment() {
         }
 
         binding.auth.setOnClickListener {
-            val login = binding.email.text.toString()
-            val password = binding.password.text.toString()
-            if (loginViewModel.valid(login, password)){
-                loader(true)
-                val user = AuthUser(
-                    login = login,
-                    pass = password
-                )
-                loginViewModel.authUser(user)
-                loginViewModel.requestAuthData.observe(viewLifecycleOwner){
-                    loader(false)
-                    when (it){
-                        is Auth.SuccessAuth -> {
-                            sharedViewModel.setToken(it.requestToken)
-                            findNavController().navigate(R.id.action_logInAccountFragment_to_homeFragment)
-                        }
-                        is Auth.ErrorAuth -> {
-                            loginViewModel.showSnackBar(requireView(), it.errorMessage)
-                        }
+            authUser()
+        }
+    }
+
+    private fun authUser(){
+        val login = binding.email.text.toString()
+        val password = binding.password.text.toString()
+        if (loginViewModel.valid(login, password)){
+            loader(true)
+            val user = AuthUser(
+                login = login,
+                pass = password
+            )
+            loginViewModel.authUser(user)
+            loginViewModel.requestAuthData.observe(viewLifecycleOwner){
+                loader(false)
+                when (it){
+                    is Auth.SuccessAuth -> {
+                        sharedViewModel.setToken(it.requestToken)
+                        findNavController().navigate(R.id.action_logInAccountFragment_to_homeFragment)
+                    }
+                    is Auth.ErrorAuth -> {
+                        loginViewModel.showSnackBar(requireView(), it.errorMessage)
                     }
                 }
-            } else {
-                loginViewModel.showSnackBar(requireView(), "Введите логин и пароль...")
             }
+        } else {
+            loginViewModel.showSnackBar(requireView(), "Введите логин и пароль...")
         }
     }
 

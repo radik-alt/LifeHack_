@@ -1,5 +1,6 @@
 package com.example.lifehack.presentation.AddLifeHack
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,6 +30,7 @@ class CreatePostViewModel(
 
     fun createPost(post: CreatePost){
         viewModelScope.launch {
+            Log.d("CreatePostView", post.toString())
             if (token != null){
                 apiRepository.createPost(post, "Bearer $token")
             }

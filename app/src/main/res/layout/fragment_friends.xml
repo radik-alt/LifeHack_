@@ -35,8 +35,6 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
 
-
-
     <include
         android:id="@+id/toolbarHome"
         layout="@layout/toolbar_home"
@@ -52,6 +50,8 @@
         android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:endIconCheckable="true"
+        app:passwordToggleEnabled="true"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
         app:endIconDrawable="@drawable/ic_baseline_search_24"
@@ -59,6 +59,8 @@
         tools:layout_editor_absoluteX="10dp">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/searchFollower"
+            android:inputType="text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/search_input"
