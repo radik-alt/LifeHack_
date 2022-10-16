@@ -1,7 +1,6 @@
 package com.example.lifehack.presentation.adapter.AdapterTags
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -13,7 +12,7 @@ import com.example.lifehack.databinding.ItemTagsBinding
 import com.example.lifehack.presentation.adapter.intreface.OnClickTags
 
 class TagsAdapters(
-    private val tags: ArrayList<Tags>,
+    private val tags: List<Tags>,
     private val onClickTags: OnClickTags
 ) : RecyclerView.Adapter<TagsViewHolder>() {
 
@@ -38,7 +37,6 @@ class TagsAdapters(
         }
 
         holder.button.setOnClickListener {
-            Log.d("SelectTag", tags[position].toString())
             selectTags(holder, position)
         }
     }
