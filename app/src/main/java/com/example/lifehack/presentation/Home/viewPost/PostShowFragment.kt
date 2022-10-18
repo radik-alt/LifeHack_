@@ -1,14 +1,20 @@
 package com.example.lifehack.presentation.Home.viewPost
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.lifehack.R
 import com.example.lifehack.data.entity.Comments.AddComment.AddComment
 import com.example.lifehack.data.entity.Comments.ChangeComment.ChangeComment
 import com.example.lifehack.data.entity.Comments.Comments
@@ -17,6 +23,7 @@ import com.example.lifehack.databinding.FragmentPostShowBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
 import com.example.lifehack.presentation.adapter.AdapterComments.AdapterComments
 import com.example.lifehack.presentation.adapter.intreface.OnClickComment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.lang.RuntimeException
 
 class PostShowFragment : Fragment() {
@@ -36,10 +43,13 @@ class PostShowFragment : Fragment() {
 
 
     override fun onResume() {
+        hideBottomView()
         super.onResume()
         sharedViewModel.getToken().observe(viewLifecycleOwner){
             postViewModel.setToken(it.accessToken)
+            postViewModel.setPostId(navPost.contentOfPost.post_id)
             getComments()
+            showPost()
         }
     }
 
@@ -54,7 +64,14 @@ class PostShowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        showPost()
+
+        binding.layoutViewPost.setOnClickListener {
+            clearFocusEditText()
+        }
+
+        if (!binding.equals(binding.textComment) && !binding.equals(binding.sendComment)){
+            clearFocusEditText()
+        }
 
         binding.backHome.setOnClickListener {
             findNavController().popBackStack()
@@ -63,16 +80,36 @@ class PostShowFragment : Fragment() {
         binding.sendComment.setOnClickListener {
             if (postViewModel.getIsEditComment().value == true){
                 updateComment()
-                postViewModel.showSnackBar(requireView(), "Обновление комментария...")
             } else {
                 sendComment()
             }
         }
 
-        binding.subscribe.setOnClickListener {
-            subscription()
+        binding.imageView.setOnClickListener {
+            clearFocusEditText()
         }
 
+        binding.subscribe.setOnClickListener {
+            subscription()
+            clearFocusEditText()
+        }
+
+        binding.descriptionPost.setOnClickListener {
+            binding.descriptionPost.maxLines = Int.MAX_VALUE
+            clearFocusEditText()
+        }
+
+
+    }
+
+    private fun hideBottomView(){
+        val fragmentActivity = activity
+        if (activity != null){
+            val bottom = fragmentActivity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+            if (bottom != null && bottom.visibility == View.VISIBLE) {
+                bottom.visibility = View.GONE
+            }
+        }
     }
 
     private fun getComments(){
@@ -96,6 +133,7 @@ class PostShowFragment : Fragment() {
                             1 -> {
                                 postViewModel.setIsEditComment(true)
                                 postViewModel.selectCommentChange.value = comment
+                                binding.textComment.setText(comment.comment)
                             }
                         }
                     }
@@ -119,9 +157,16 @@ class PostShowFragment : Fragment() {
             postViewModel.addComment(comment)
             getComments()
             binding.textComment.text?.clear()
+            clearFocusEditText()
         } else {
             postViewModel.showSnackBar(requireView(), "Введите комментарий...")
         }
+    }
+
+    private fun clearFocusEditText(){
+        binding.textComment.clearFocus()
+        val inputManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
     private fun updateComment(){
@@ -146,10 +191,6 @@ class PostShowFragment : Fragment() {
     }
 
     private fun deleteComment(){
-
-    }
-
-    private fun getStarsOfPost(){
 
     }
 

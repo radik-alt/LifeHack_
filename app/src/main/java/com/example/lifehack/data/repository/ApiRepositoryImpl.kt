@@ -13,6 +13,7 @@ import com.example.lifehack.data.entity.Posts.MainPost
 import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
 import com.example.lifehack.data.entity.Stars.GetStars
 import com.example.lifehack.data.entity.Stars.PostStars
+import com.example.lifehack.data.entity.Stars.Top100.Top100
 import retrofit2.Response
 
 class ApiRepositoryImpl {
@@ -67,6 +68,10 @@ class ApiRepositoryImpl {
 
     suspend fun getStarsOfPost(id: String, token: String):Response<GetStars>{
         return ApiDataConnect.apiStars.getStarsOfPost(id, token)
+    }
+
+    suspend fun getTop100OPostOfTag(tag: String, token:String):Response<Top100>{
+        return ApiDataConnect.apiStars.getTop100PostOfTag(tag, token)
     }
 
 }

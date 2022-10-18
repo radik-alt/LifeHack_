@@ -46,7 +46,11 @@
         android:id="@+id/addLifeHackFragment2"
         android:name="com.example.lifehack.presentation.AddLifeHack.AddLifeHackFragment"
         android:label="fragment_add_life_hack"
-        tools:layout="@layout/fragment_add_life_hack" />
+        tools:layout="@layout/fragment_add_life_hack" >
+        <action
+            android:id="@+id/action_addLifeHackFragment2_to_settingUserFragment"
+            app:destination="@id/settingUserFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingUserFragment"
         android:name="com.example.lifehack.presentation.Account.SettingUser.SettingUserFragment"
@@ -71,7 +75,14 @@
         android:id="@+id/ratingFragment"
         android:name="com.example.lifehack.presentation.Rating.RatingFragment"
         android:label="fragment_rating"
-        tools:layout="@layout/fragment_rating" />
+        tools:layout="@layout/fragment_rating" >
+        <action
+            android:id="@+id/action_ratingFragment_to_settingUserFragment"
+            app:destination="@id/settingUserFragment" />
+        <action
+            android:id="@+id/action_ratingFragment_to_viewTopPostFragment"
+            app:destination="@id/viewTopPostFragment" />
+    </fragment>
     <fragment
         android:id="@+id/friendsFragment"
         android:name="com.example.lifehack.presentation.Friends.FriendsFragment"
@@ -85,7 +96,11 @@
         android:id="@+id/searchFragment"
         android:name="com.example.lifehack.presentation.Search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_settingUserFragment"
+            app:destination="@id/settingUserFragment" />
+    </fragment>
     <fragment
         android:id="@+id/viewFollowerFragment"
         android:name="com.example.lifehack.presentation.Friends.ViewFirends.ViewFollowerFragment"
@@ -94,5 +109,14 @@
         <argument
             android:name="dataUser"
             app:argType="com.example.lifehack.data.entity.Follow.Data" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewTopPostFragment"
+        android:name="com.example.lifehack.presentation.Rating.viewRatingPost.ViewTopPostFragment"
+        android:label="fragment_view_top_post"
+        tools:layout="@layout/fragment_view_top_post" >
+        <argument
+            android:name="topPost"
+            app:argType="com.example.lifehack.data.entity.Stars.Top100.Top100Item" />
     </fragment>
 </navigation>

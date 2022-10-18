@@ -24,8 +24,14 @@ class ViewPostViewModel(
     private val comments = MutableLiveData<Comments>()
     private val isEditComment = MutableLiveData<Boolean>(false)
     val selectCommentChange = MutableLiveData<Data>()
+    val starsOfPost = MutableLiveData<GetStars>()
 
     private var token:String?=null
+    private var idPost: String?=null
+
+    fun setPostId(idPost:String){
+        this.idPost = idPost
+    }
 
     fun setToken(tokenTemp:String){
         token = tokenTemp
@@ -93,14 +99,15 @@ class ViewPostViewModel(
         }
     }
 
-    fun getStarsOfPost(id:String){
+    fun getStarsOfPost(){
         viewModelScope.launch {
             val getStars = token?.let {
-                apiRepository.getStarsOfPost(id, it)
+                idPost?.let { idPost -> apiRepository.getStarsOfPost(idPost, it) }
             }
             if (getStars != null){
                 if (getStars.isSuccessful){
-                    Log.d("GetRequestStars", getStars.body().toString())
+                    starsOfPost.postValue(getStars.body())
+                    Log.d("GetStarsData", getStars.body().toString())
                 } else {
                     Log.d("GetRequestStars", getStars.code().toString())
                 }
@@ -108,14 +115,19 @@ class ViewPostViewModel(
         }
     }
 
+
     fun validCommentSend(comment:String):Boolean{
         return comment.isNotEmpty()
     }
 
 }
 
-sealed class Comments(){
+sealed class Stars{
+    class SuccessStars(val stars: GetStars):Stars()
+    class ErrorStar(val error: String):Stars()
+}
 
-    class Success(val comment: Comments)
-    class Error(val message: String)
+sealed class CommentsSealed{
+    class Success(val comment: Comments):CommentsSealed()
+    class Error(val message: String):CommentsSealed()
 }

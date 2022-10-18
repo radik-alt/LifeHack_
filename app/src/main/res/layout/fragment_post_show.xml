@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10sp"
+    android:id="@+id/layoutViewPost"
     tools:context=".presentation.Home.viewPost.PostShowFragment">
 
 
@@ -50,21 +51,13 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/search_input"
                 android:padding="5sp"
                 android:src="@drawable/ic_baseline_edit_24" />
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="5sp"
-                android:background="@drawable/search_input"
-                android:padding="5sp"
-                android:src="@drawable/ic_baseline_favorite_border_24" />
 
         </LinearLayout>
 
@@ -160,16 +153,22 @@
         <TextView
             android:id="@+id/descriptionPost"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lorem_inspum" />
+            android:layout_height="match_parent"
+            android:maxLines="5"
+            android:textColor="@color/textColor"
+            android:lineHeight="22sp"
+            android:textSize="16sp"
+            android:ellipsize="end"
+            android:text="Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0sp"
         android:layout_marginTop="30sp"
         android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
@@ -184,38 +183,41 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/commentRecycler"
-            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10sp"
             android:orientation="vertical"
+            android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>
 
-    <GridLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="2"
-        android:background="@drawable/search_input"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout2"
             android:layout_width="0sp"
             android:layout_height="wrap_content"
             android:layout_columnWeight="1"
-            android:layout_marginTop="10sp"
             app:boxStrokeWidth="0dp"
-            app:boxStrokeWidthFocused="0dp">
+            app:boxStrokeWidthFocused="0dp"
+            app:layout_constraintEnd_toStartOf="@+id/sendComment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textComment"
-                android:background="@drawable/search_input"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Написать комментарий"
+                android:background="@drawable/search_input"
+                android:hint="Комменатрий"
                 android:inputType="textMultiLine"
                 android:textSize="16sp" />
 
@@ -227,10 +229,14 @@
             android:layout_height="match_parent"
             android:layout_columnWeight="0"
             android:layout_gravity="center_vertical"
-            android:backgroundTint="@color/inputColor"
-            android:src="@drawable/ic_baseline_send_24" />
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_baseline_send_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textInputLayout2"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    </GridLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

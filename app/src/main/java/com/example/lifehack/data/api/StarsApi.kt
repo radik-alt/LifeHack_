@@ -2,6 +2,7 @@ package com.example.lifehack.data.api
 
 import com.example.lifehack.data.entity.Stars.GetStars
 import com.example.lifehack.data.entity.Stars.PostStars
+import com.example.lifehack.data.entity.Stars.Top100.Top100
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -35,10 +36,6 @@ interface StarsApi {
     suspend fun getTop100PostOfTag(
         @Path("tag") tag: String,
         @Header("Authorization") Bearer: String
-    )
+    ): Response<Top100>
 
-//    @GET("")
-//    suspend fun getTop5PostOfTag(
-//        @Header("Authorization") Bearer: String
-//    )
 }

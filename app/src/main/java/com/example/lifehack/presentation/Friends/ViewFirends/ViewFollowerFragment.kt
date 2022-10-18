@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.lifehack.R
 import com.example.lifehack.databinding.FragmentHomeBinding
 import com.example.lifehack.databinding.FragmentViewFollowerBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.lang.RuntimeException
 
 
@@ -17,6 +18,12 @@ class ViewFollowerFragment : Fragment() {
     private var _binding: FragmentViewFollowerBinding?=null
     private val binding: FragmentViewFollowerBinding
         get() = _binding ?: throw RuntimeException("FragmentViewFollowerBinding == null")
+
+
+    override fun onResume() {
+        super.onResume()
+        hideBottomView()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,6 +42,16 @@ class ViewFollowerFragment : Fragment() {
 
         binding.deleteFriends.setOnClickListener {
 
+        }
+    }
+
+    private fun hideBottomView(){
+        val fragmentActivity = activity
+        if (activity != null){
+            val bottom = fragmentActivity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+            if (bottom != null && bottom.visibility == View.VISIBLE) {
+                bottom.visibility = View.GONE
+            }
         }
     }
 

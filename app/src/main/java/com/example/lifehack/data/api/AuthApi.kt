@@ -5,10 +5,7 @@ import com.example.lifehack.data.Utils.AUTH_URl
 import com.example.lifehack.data.Utils.SIGNUP_URl
 import com.example.lifehack.data.entity.Auth.*
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface AuthApi {
 
@@ -34,6 +31,12 @@ interface AuthApi {
     @POST("auth/refresh")
     suspend fun refreshToken(
         @Body token: RefreshToken
+    )
+
+    @GET("user/{usedId}")
+    suspend fun getDataUser(
+        @Path("userId") userId: String,
+        @Header("Authorization") Bearer: String
     )
 
 }

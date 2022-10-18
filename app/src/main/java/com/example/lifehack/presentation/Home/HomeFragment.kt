@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.example.lifehack.R
 import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Posts.Content
@@ -35,7 +36,7 @@ class HomeFragment : Fragment() {
 
     private val sharedViewModel : SharedTokenViewModel by activityViewModels()
     private var token: RequestToken?=null
-    private var listHomePosts = ArrayList<Content?>()
+    private var listHomePosts = ArrayList<Content>()
 
     override fun onResume() {
         super.onResume()
@@ -56,6 +57,16 @@ class HomeFragment : Fragment() {
             setAdapter()
             loader(false)
         }
+
+        binding.listHomePosts.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
     }
 
     override fun onCreateView(

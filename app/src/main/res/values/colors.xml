@@ -17,4 +17,6 @@
     <color name="childrenColor">#ffaeed</color>
     <color name="techColor">#3a68b0</color>
 
+    <color name="textColor">#AAAAAA</color>
+
 </resources>

@@ -18,6 +18,7 @@ import com.example.lifehack.databinding.FragmentFriendsBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
 import com.example.lifehack.presentation.adapter.FreindsAdapter.FriendsAdapter
 import com.example.lifehack.presentation.adapter.intreface.OnClickFollower
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class FriendsFragment : Fragment() {
@@ -33,6 +34,7 @@ class FriendsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        showBottomView()
         loader(true)
         tokenViewModel.getToken().observe(viewLifecycleOwner){
             friendsViewModel.setToken(it.accessToken)
@@ -69,6 +71,16 @@ class FriendsFragment : Fragment() {
             }
         })
 
+    }
+
+    private fun showBottomView(){
+        val fragmentActivity = activity
+        if (activity != null){
+            val bottom = fragmentActivity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+            if (bottom != null && bottom.visibility == View.GONE) {
+                bottom.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun getFollowerUser(){
