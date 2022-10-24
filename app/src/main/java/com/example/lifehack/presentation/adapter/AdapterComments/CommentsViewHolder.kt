@@ -7,5 +7,6 @@ class CommentsViewHolder(binding: ItemCommentsBinding) : RecyclerView.ViewHolder
 
     val userComment = binding.userComment
     val comment = binding.comment
+    val delete = binding.deleteComment
 
 }

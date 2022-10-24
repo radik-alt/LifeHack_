@@ -9,6 +9,7 @@ import com.example.lifehack.data.entity.Comments.AddComment.AddComment
 import com.example.lifehack.data.entity.Comments.ChangeComment.ChangeComment
 import com.example.lifehack.data.entity.Comments.Comments
 import com.example.lifehack.data.entity.Follow.RequestFollow
+import com.example.lifehack.data.entity.Follow.postFollow.PostFollow
 import com.example.lifehack.data.entity.Posts.MainPost
 import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
 import com.example.lifehack.data.entity.Stars.GetStars
@@ -56,6 +57,10 @@ class ApiRepositoryImpl {
 
     suspend fun getFollowUsers(token:String):Response<RequestFollow>{
         return ApiDataConnect.apiFollow.getFollowUsers(token)
+    }
+
+    suspend fun postFollowUser(token: String, postFollow: PostFollow){
+        return ApiDataConnect.apiFollow.postFollowUser(token, postFollow)
     }
 
     suspend fun deleteFollowUser(token: String, followId:String){

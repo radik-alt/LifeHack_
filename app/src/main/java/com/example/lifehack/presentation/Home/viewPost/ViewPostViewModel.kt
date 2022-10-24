@@ -10,6 +10,7 @@ import com.example.lifehack.data.entity.Comments.AddComment.AddComment
 import com.example.lifehack.data.entity.Comments.ChangeComment.ChangeComment
 import com.example.lifehack.data.entity.Comments.Comments
 import com.example.lifehack.data.entity.Comments.Data
+import com.example.lifehack.data.entity.Follow.postFollow.PostFollow
 import com.example.lifehack.data.entity.Stars.GetStars
 import com.example.lifehack.data.entity.Stars.PostStars
 import com.example.lifehack.data.repository.ApiRepositoryImpl
@@ -89,6 +90,14 @@ class ViewPostViewModel(
 
     fun showSnackBar(view: View, error: String){
         Snackbar.make(view, error, Snackbar.LENGTH_SHORT).show()
+    }
+
+    fun subscribe(postFollow: PostFollow){
+        viewModelScope.launch {
+            token?.let {
+                apiRepository.postFollowUser(it, postFollow)
+            }
+        }
     }
 
     fun setUpdateStarsOfPost(stars: PostStars){

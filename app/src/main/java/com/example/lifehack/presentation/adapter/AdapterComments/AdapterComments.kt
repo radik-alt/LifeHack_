@@ -1,6 +1,8 @@
 package com.example.lifehack.presentation.adapter.AdapterComments
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lifehack.data.entity.Comments.Comments
@@ -11,8 +13,11 @@ import com.example.lifehack.presentation.adapter.intreface.OnClickComment
 
 class AdapterComments(
     private val listComment: List<Data>,
+    private val userId : String,
     private val onClickComment: OnClickComment
 ) : RecyclerView.Adapter<CommentsViewHolder>(){
+
+    private var editComment = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentsViewHolder {
         val view = ItemCommentsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -24,14 +29,39 @@ class AdapterComments(
         holder.comment.text = listComment[position].comment
         holder.userComment.text = listComment[position].author_name
 
+        if (editComment)
+            holder.delete.visibility = View.VISIBLE
+        else
+            holder.delete.visibility = View.GONE
+
+
         holder.itemView.setOnClickListener {
             onClickComment.onClickComment(listComment[position], 0)
+        }
+
+        holder.delete.setOnClickListener {
+            onClickComment.onClickComment(listComment[position], 2)
         }
 
         holder.itemView.setOnLongClickListener {
             onClickComment.onClickComment(listComment[position], 1)
             true
         }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (listComment[position].author_id == userId){
+            editComment = true
+            EDIT
+        } else {
+            editComment = false
+            NO_EDIT
+        }
+    }
+
+    companion object{
+        private const val EDIT = 1
+        private const val NO_EDIT = 0
     }
 
     override fun getItemCount(): Int = listComment.size

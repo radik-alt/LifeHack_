@@ -122,9 +122,10 @@ class PostShowFragment : Fragment() {
 
     private fun setAdapterComments(){
         if (comments != null){
+
             val dataComments = comments?.content?.get(0)?.data
             val adapter = dataComments?.let { listData ->
-                AdapterComments(listData, object : OnClickComment{
+                AdapterComments(listData, "11111111-1111-1111-1111-111111111111", object : OnClickComment{
                     override fun onClickComment(comment: Data, view: Int) {
                         when (view) {
                             0 -> {
@@ -135,6 +136,9 @@ class PostShowFragment : Fragment() {
                                 postViewModel.selectCommentChange.value = comment
                                 binding.textComment.setText(comment.comment)
                             }
+                            2 -> {
+                                deleteComment(comment.id)
+                            }
                         }
                     }
                 })
@@ -144,7 +148,8 @@ class PostShowFragment : Fragment() {
     }
 
     private fun subscription(){
-
+        /// Все останавливается на том, что не понятно чей это пост,
+        // сам на себя юзер не может подписываться, надо сранивать id
     }
 
     private fun sendComment(){
@@ -187,19 +192,19 @@ class PostShowFragment : Fragment() {
             postViewModel.changeComment(changeComments)
             binding.textComment.text?.clear()
             postViewModel.setIsEditComment(false)
+            getComments()
         }
     }
 
-    private fun deleteComment(){
-
+    private fun deleteComment(commentId:String){
+        postViewModel.deleteComment(commentId)
+        getComments()
     }
 
     private fun setMyStarsPost(){
-
     }
 
     private fun updateMyStarsPost(){
-
     }
 
     private fun showPost(){
@@ -207,6 +212,10 @@ class PostShowFragment : Fragment() {
         binding.namePost.text = content.title
         binding.starsPost.text = content.countStar.toString()
         binding.descriptionPost.text = content.description
+
+        binding.subscribe.visibility = View.GONE
+        binding.deletePost.visibility = View.GONE
+        binding.editPost.visibility = View.GONE
     }
 
     override fun onDestroyView() {
