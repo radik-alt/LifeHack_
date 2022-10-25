@@ -17,7 +17,13 @@ class FriendsViewModel(
 
     private val apiRepository = ApiRepositoryImpl()
     private var users = MutableLiveData<FollowUsers>()
-    private var filterUsers = ArrayList<Data>()
+    private var allUsers = ArrayList<Data>()
+    private var isSearch = MutableLiveData<Boolean>(false)
+
+    fun getIsSearch():LiveData<Boolean> = isSearch
+    fun setIsSearch(search:Boolean){
+        isSearch.value = search
+    }
 
     private var token:String?=null
 
@@ -34,8 +40,8 @@ class FriendsViewModel(
                 })
                 val req = requestFollow.body()
                 if (req != null) {
-                    filterUsers.clear()
-                    filterUsers = req.data as ArrayList<Data>
+                    allUsers.clear()
+                    allUsers = req.data as ArrayList<Data>
                 }
                 Log.d("GetFollowUsers", requestFollow.body().toString())
             } else {
@@ -64,13 +70,13 @@ class FriendsViewModel(
     }
 
     fun getSearchFollower(inputName:CharSequence){
-        val filter = filterUsers.filter {
+        val filter = allUsers.filter {
             it.followedName
                 .lowercase()
                 .trim()
                 .contains(inputName.trim())
         }
-        Log.d("FilterList", filter.toString())
+        users.value = FollowUsers.Search(filter)
     }
 
     fun getList():LiveData<FollowUsers> = users
@@ -83,5 +89,6 @@ class FriendsViewModel(
 sealed class FollowUsers(){
 
     class Success(val users: List<Data>):FollowUsers()
+    class Search(val users: List<Data>):FollowUsers()
     class Error(val error: String):FollowUsers()
 }

@@ -60,14 +60,19 @@ class FriendsFragment : Fragment() {
 
             }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (p0 != null && p0.isNotEmpty()) {
-                    friendsViewModel.getSearchFollower(p0)
+            override fun onTextChanged(searchText: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (searchText != null && searchText.isNotEmpty()) {
+                    friendsViewModel.getSearchFollower(searchText)
+                    getFollowerUser()
+                } else if (searchText?.isEmpty() == true) {
+                    friendsViewModel.getFollowUsers()
+                    getFollowerUser()
                 }
             }
 
             override fun afterTextChanged(p0: Editable?) {
-
+//                if (p0?.isEmpty() == true)
+//                    friendsViewModel.getFollowUsers()
             }
         })
 
@@ -85,6 +90,7 @@ class FriendsFragment : Fragment() {
 
     private fun getFollowerUser(){
         friendsViewModel.getList().observe(viewLifecycleOwner){
+            val isSearch = friendsViewModel.getIsSearch().value
             when (it){
                 is FollowUsers.Success ->{
                     val friends = it.users
@@ -92,6 +98,14 @@ class FriendsFragment : Fragment() {
                         setAdapter(friends)
                     } else {
                         loader(false, "Нет подписок! Скорее заводи новые)")
+                    }
+                }
+                is FollowUsers.Search -> {
+                    val friends = it.users
+                    if (!friends.isNullOrEmpty()){
+                        setAdapter(friends)
+                    } else {
+                        loader(false, "Таких юзеров нет...")
                     }
                 }
                 is FollowUsers.Error -> {
@@ -135,6 +149,7 @@ class FriendsFragment : Fragment() {
                 } else {
                     binding.recyclerFriends.visibility = View.GONE
                     binding.errorLoaderFriends.visibility = View.VISIBLE
+                    binding.errorLoaderFriends.text = error
                     binding.progressFriends.visibility = View.GONE
                 }
             }
