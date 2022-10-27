@@ -23,5 +23,10 @@ interface PostsApi {
         @Body post: CreatePost
     )
 
+    @DELETE("post/{postId}")
+    suspend fun deletePost(
+        @Path("postId") userId:String,
+        @Header("Authorization") Bearer: String,
+    )
 
 }

@@ -9,5 +9,6 @@ data class Content(
     val description: String,
     val tags: List<String>?,
     val post_id: String,
+    val user_id:String,
     val title: String
 ): Parcelable

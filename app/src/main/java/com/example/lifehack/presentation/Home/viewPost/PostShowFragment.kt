@@ -14,11 +14,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.example.lifehack.R
+import com.example.lifehack.data.Utils
 import com.example.lifehack.data.entity.Comments.AddComment.AddComment
 import com.example.lifehack.data.entity.Comments.ChangeComment.ChangeComment
 import com.example.lifehack.data.entity.Comments.Comments
 import com.example.lifehack.data.entity.Comments.Data
+import com.example.lifehack.data.entity.Follow.postFollow.PostFollow
 import com.example.lifehack.databinding.FragmentPostShowBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
 import com.example.lifehack.presentation.adapter.AdapterComments.AdapterComments
@@ -40,6 +43,7 @@ class PostShowFragment : Fragment() {
 
     private val sharedViewModel : SharedTokenViewModel by activityViewModels()
     private var comments: Comments?=null
+    private var userdId = Utils.user_default
 
 
     override fun onResume() {
@@ -64,12 +68,7 @@ class PostShowFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding.layoutViewPost.setOnClickListener {
-            clearFocusEditText()
-        }
-
-        if (!binding.equals(binding.textComment) && !binding.equals(binding.sendComment)){
             clearFocusEditText()
         }
 
@@ -95,9 +94,41 @@ class PostShowFragment : Fragment() {
         }
 
         binding.descriptionPost.setOnClickListener {
-            binding.descriptionPost.maxLines = Int.MAX_VALUE
+            if (binding.descriptionPost.maxLines == Int.MAX_VALUE){
+                binding.descriptionPost.maxLines = 5
+            } else {
+                binding.descriptionPost.maxLines = Int.MAX_VALUE
+            }
             clearFocusEditText()
         }
+
+        binding.deletePost.setOnClickListener {
+            deletePost()
+        }
+
+        binding.editPost.setOnClickListener {
+            editPost()
+        }
+
+        binding.commentRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+            }
+
+            var scroll = 0
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                scroll += dy
+                if (scroll > 100){
+                    binding.titleComments.visibility = View.GONE
+                }
+
+                if (scroll <= 0){
+                    binding.titleComments.visibility = View.VISIBLE
+                }
+            }
+        })
 
 
     }
@@ -110,6 +141,17 @@ class PostShowFragment : Fragment() {
                 bottom.visibility = View.GONE
             }
         }
+    }
+
+    private fun editPost(){
+        val action = PostShowFragmentDirections.actionPostShowFragmentToEditPostFragment(navPost.contentOfPost)
+        findNavController().navigate(action)
+    }
+
+    private fun deletePost(){
+        postViewModel.deletePost(navPost.contentOfPost.post_id)
+        findNavController().popBackStack()
+        postViewModel.showSnackBar(requireView(), "Пост ${navPost.contentOfPost.title} удален!")
     }
 
     private fun getComments(){
@@ -125,7 +167,7 @@ class PostShowFragment : Fragment() {
 
             val dataComments = comments?.content?.get(0)?.data
             val adapter = dataComments?.let { listData ->
-                AdapterComments(listData, "11111111-1111-1111-1111-111111111111", object : OnClickComment{
+                AdapterComments(listData, userdId, object : OnClickComment{
                     override fun onClickComment(comment: Data, view: Int) {
                         when (view) {
                             0 -> {
@@ -148,8 +190,10 @@ class PostShowFragment : Fragment() {
     }
 
     private fun subscription(){
-        /// Все останавливается на том, что не понятно чей это пост,
-        // сам на себя юзер не может подписываться, надо сранивать id
+        val postFollow = PostFollow(
+            followed_id = userdId
+        )
+        postViewModel.subscribe(postFollow)
     }
 
     private fun sendComment(){
@@ -213,9 +257,15 @@ class PostShowFragment : Fragment() {
         binding.starsPost.text = content.countStar.toString()
         binding.descriptionPost.text = content.description
 
-        binding.subscribe.visibility = View.GONE
-        binding.deletePost.visibility = View.GONE
-        binding.editPost.visibility = View.GONE
+        if (userdId != content.user_id){
+            binding.subscribe.visibility = View.VISIBLE
+            binding.deletePost.visibility = View.GONE
+            binding.editPost.visibility = View.GONE
+        } else {
+            binding.subscribe.visibility = View.GONE
+            binding.deletePost.visibility = View.VISIBLE
+            binding.editPost.visibility = View.VISIBLE
+        }
     }
 
     override fun onDestroyView() {

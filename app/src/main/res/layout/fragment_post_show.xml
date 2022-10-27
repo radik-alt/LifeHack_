@@ -168,9 +168,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:maxLines="5"
-            android:textColor="@color/textColor"
-            android:lineHeight="22sp"
-            android:textSize="16sp"
+            android:inputType="textMultiLine"
+            android:textColor="@color/black"
+            android:lineHeight="24sp"
+            android:textSize="18sp"
             android:ellipsize="end"
             android:text="Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-" />
 
@@ -187,6 +188,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <TextView
+            android:id="@+id/titleComments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Отзывы"
