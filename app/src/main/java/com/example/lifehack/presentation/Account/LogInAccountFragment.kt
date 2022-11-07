@@ -1,12 +1,14 @@
 package com.example.lifehack.presentation.Account
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.lifehack.R
 import com.example.lifehack.data.entity.Auth.AuthUser
@@ -28,13 +30,16 @@ class LogInAccountFragment : Fragment() {
 
     private val sharedViewModel : SharedTokenViewModel by activityViewModels()
 
+    override fun onResume() {
+        super.onResume()
+        hideBottomView()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLogInAccountBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
-        hideBottomView()
         return binding.root
     }
 
@@ -65,9 +70,12 @@ class LogInAccountFragment : Fragment() {
                 when (it){
                     is Auth.SuccessAuth -> {
                         sharedViewModel.setToken(it.requestToken)
-                        findNavController().navigate(R.id.action_logInAccountFragment_to_homeFragment)
+                        Log.d("getLogAuth", it.requestToken.toString())
+                        val action = LogInAccountFragmentDirections.actionLogInAccountFragmentToHomeFragment()
+                        findNavController().navigate(action)
                     }
                     is Auth.ErrorAuth -> {
+                        Log.d("getLogAuth", it.errorMessage)
                         loginViewModel.showSnackBar(requireView(), it.errorMessage)
                     }
                 }

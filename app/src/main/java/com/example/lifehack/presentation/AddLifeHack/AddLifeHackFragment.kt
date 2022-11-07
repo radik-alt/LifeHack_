@@ -20,6 +20,7 @@ import com.example.lifehack.presentation.Home.SharedTokenViewModel
 import com.example.lifehack.presentation.adapter.AdapterTags.TagsAdapters
 import com.example.lifehack.presentation.adapter.intreface.OnClickTags
 import com.google.android.material.snackbar.Snackbar
+import okhttp3.MediaType
 
 
 class AddLifeHackFragment : Fragment() {
@@ -41,8 +42,7 @@ class AddLifeHackFragment : Fragment() {
         tokenViewModel.getToken().observe(viewLifecycleOwner){
             createViewModel.setToken(it)
         }
-        getSelectedImage()
-        getSelectedTags()
+        setAdapter()
     }
 
 
@@ -52,7 +52,6 @@ class AddLifeHackFragment : Fragment() {
     ): View {
         _binding = FragmentAddLifeHackBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
-        setAdapter()
         return binding.root
     }
 
@@ -72,12 +71,7 @@ class AddLifeHackFragment : Fragment() {
     }
 
     private fun setAdapter(){
-        val listTags = ArrayList<Tags>()
-        listTags.add(Tags("Дома", false))
-        listTags.add(Tags("Еда", false))
-        listTags.add(Tags("Спорт", false))
-        listTags.add(Tags("Дети", false))
-        listTags.add(Tags("Техника", false))
+        val listTags = createViewModel.getListAllTags()
 
         binding.listTags.layoutManager = GridLayoutManager(requireContext(), 4)
         binding.listTags.adapter = TagsAdapters(listTags, object : OnClickTags{
@@ -87,9 +81,10 @@ class AddLifeHackFragment : Fragment() {
                 } else {
                     createViewModel.addTags(tag)
                 }
-                Log.d("GetTagSelected", createViewModel.getTags().value.toString())
+                Log.d("GetTagSelected", tag.toString())
             }
         })
+
     }
 
 
@@ -102,6 +97,7 @@ class AddLifeHackFragment : Fragment() {
             .into(binding.imagePost)
 
         if (image != null){
+            filesImage.add(image.toString())
             createViewModel.addImage(image.toString())
         }
     }
@@ -115,31 +111,29 @@ class AddLifeHackFragment : Fragment() {
             val post = CreatePost(
                 title = title,
                 description = descriptionPost,
-                tags = tags,
-                files = filesImage
+                tags = createViewModel.getTags(),
+                files = createViewModel.getImage()
             )
+            Log.d("CreatePostData", post.toString())
             createViewModel.createPost(post)
+            createViewModel.snackBar(requireView(), "Пост успешно создан!")
+            clear()
         } else {
-            Snackbar.make(requireView(), "Введите название и описание", Snackbar.LENGTH_SHORT).show()
+            createViewModel.snackBar(requireView(), "Введите название и описание")
         }
+    }
+
+    private fun clear(){
+        binding.title.text?.clear()
+        binding.description.text?.clear()
     }
 
     private fun getSelectedImage(){
-        createViewModel.getImage().observe(viewLifecycleOwner){
-            filesImage.clear()
-            filesImage.addAll(it)
-            Glide.with(requireContext())
-                .load(filesImage[0])
-                .error(R.drawable.ic_launcher_foreground)
-                .into(binding.imagePost)
-        }
-    }
-
-    private fun getSelectedTags(){
-        createViewModel.getTags().observe(viewLifecycleOwner){
-            tags.clear()
-            tags.addAll(it)
-        }
+        val imageList = createViewModel.getImage()
+        Glide.with(requireContext())
+            .load(imageList[0])
+            .error(R.drawable.ic_launcher_foreground)
+            .into(binding.imagePost)
     }
 
     override fun onDestroyView() {

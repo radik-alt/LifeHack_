@@ -40,8 +40,9 @@ class PostShowFragment : Fragment() {
     private val postViewModel : ViewPostViewModel by lazy {
         ViewModelProvider(this)[ViewPostViewModel::class.java]
     }
-
     private val sharedViewModel : SharedTokenViewModel by activityViewModels()
+    private val starsViewModel:StarsViewModel by activityViewModels()
+
     private var comments: Comments?=null
     private var userdId = Utils.user_default
 
@@ -84,6 +85,12 @@ class PostShowFragment : Fragment() {
             }
         }
 
+        binding.starsPost.setOnClickListener {
+            starsViewModel.setPostId(navPost.contentOfPost.post_id)
+            val dialogStar = DialogStars()
+            dialogStar.show(parentFragmentManager, dialogStar.tag)
+        }
+
         binding.imageView.setOnClickListener {
             clearFocusEditText()
         }
@@ -120,11 +127,11 @@ class PostShowFragment : Fragment() {
                 super.onScrolled(recyclerView, dx, dy)
 
                 scroll += dy
-                if (scroll > 100){
+                if (scroll > 150){
                     binding.titleComments.visibility = View.GONE
                 }
 
-                if (scroll <= 0){
+                if (scroll <= 50){
                     binding.titleComments.visibility = View.VISIBLE
                 }
             }
@@ -167,16 +174,18 @@ class PostShowFragment : Fragment() {
 
             val dataComments = comments?.content?.get(0)?.data
             val adapter = dataComments?.let { listData ->
-                AdapterComments(listData, userdId, object : OnClickComment{
+                AdapterComments(userdId, object : OnClickComment{
                     override fun onClickComment(comment: Data, view: Int) {
                         when (view) {
                             0 -> {
                                 postViewModel.setIsEditComment(false)
                             }
                             1 -> {
-                                postViewModel.setIsEditComment(true)
-                                postViewModel.selectCommentChange.value = comment
-                                binding.textComment.setText(comment.comment)
+                                if (userdId == comment.author_id){
+                                    postViewModel.setIsEditComment(true)
+                                    postViewModel.selectCommentChange.value = comment
+                                    binding.textComment.setText(comment.comment)
+                                }
                             }
                             2 -> {
                                 deleteComment(comment.id)
@@ -185,6 +194,7 @@ class PostShowFragment : Fragment() {
                     }
                 })
             }
+            adapter?.setData(dataComments)
             binding.commentRecycler.adapter = adapter
         }
     }
@@ -221,18 +231,19 @@ class PostShowFragment : Fragment() {
     private fun updateComment(){
 
         val comment = postViewModel.selectCommentChange.value
-        binding.textComment.setText(comment?.comment ?: "")
         val changeCommentText = binding.textComment.text.toString()
 
         val validChangeComment = comment?.let {
             postViewModel.validCommentChange(changeCommentText, it)
         }
+
         if (validChangeComment == true){
             val changeComments = ChangeComment(
                 id = comment.id,
                 comment = changeCommentText,
                 post_id = navPost.contentOfPost.post_id
             )
+
             postViewModel.changeComment(changeComments)
             binding.textComment.text?.clear()
             postViewModel.setIsEditComment(false)
@@ -245,22 +256,22 @@ class PostShowFragment : Fragment() {
         getComments()
     }
 
-    private fun setMyStarsPost(){
-    }
-
-    private fun updateMyStarsPost(){
-    }
-
     private fun showPost(){
         val content = navPost.contentOfPost
         binding.namePost.text = content.title
-        binding.starsPost.text = content.countStar.toString()
+        binding.starsPost.text = content.count_star.toString()
+        binding.ratingBar.rating = content.count_star.toFloat()
         binding.descriptionPost.text = content.description
 
         if (userdId != content.user_id){
             binding.subscribe.visibility = View.VISIBLE
             binding.deletePost.visibility = View.GONE
             binding.editPost.visibility = View.GONE
+
+            // поставить условие для этих действий
+            binding.subscribe.text = "Отписаться"
+            binding.subscribe.background = requireContext().getDrawable(R.drawable.dont_fun_button)
+
         } else {
             binding.subscribe.visibility = View.GONE
             binding.deletePost.visibility = View.VISIBLE

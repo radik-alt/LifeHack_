@@ -10,11 +10,16 @@ import com.example.lifehack.data.entity.Comments.ChangeComment.ChangeComment
 import com.example.lifehack.data.entity.Comments.Comments
 import com.example.lifehack.data.entity.Follow.RequestFollow
 import com.example.lifehack.data.entity.Follow.postFollow.PostFollow
+import com.example.lifehack.data.entity.Posts.GetPostsOfUser.PostsOfUser
 import com.example.lifehack.data.entity.Posts.MainPost
 import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
+import com.example.lifehack.data.entity.Posts.ProfilePosts.PostsUserProfile
+import com.example.lifehack.data.entity.Stars.Data
 import com.example.lifehack.data.entity.Stars.GetStars
 import com.example.lifehack.data.entity.Stars.PostStars
+import com.example.lifehack.data.entity.Stars.SetStar.SetStars
 import com.example.lifehack.data.entity.Stars.Top100.Top100
+import com.example.lifehack.data.entity.User.DataUser
 import retrofit2.Response
 
 class ApiRepositoryImpl {
@@ -35,8 +40,16 @@ class ApiRepositoryImpl {
         return ApiDataConnect.API_POSTS.getMainPost(bearer)
     }
 
+    suspend fun getPostsUserProfile(userId: String, bearer: String):Response<PostsUserProfile>{
+        return ApiDataConnect.API_POSTS.getPostsOfUserProfile(userId, bearer)
+    }
+
     suspend fun createPost(post: CreatePost, bearer: String){
         ApiDataConnect.API_POSTS.createPost(bearer, post)
+    }
+
+    suspend fun deletePost(postId:String, bearer: String){
+        ApiDataConnect.API_POSTS.deletePost(postId, bearer)
     }
 
     suspend fun getCommentOfPost(postId: String, token: String):Response<Comments>{
@@ -67,8 +80,8 @@ class ApiRepositoryImpl {
         ApiDataConnect.apiFollow.deleteFollowUser(token, followId)
     }
 
-    suspend fun setStarsOfPost(token: String, stars: PostStars){
-        ApiDataConnect.apiStars.postStarsOfPost(token, stars)
+    suspend fun setStarsOfPost(token: String, stars: PostStars):Response<SetStars>{
+        return ApiDataConnect.apiStars.postStarsOfPost(token, stars)
     }
 
     suspend fun getStarsOfPost(id: String, token: String):Response<GetStars>{
@@ -79,4 +92,7 @@ class ApiRepositoryImpl {
         return ApiDataConnect.apiStars.getTop100PostOfTag(tag, token)
     }
 
+    suspend fun getDataUser(userId: String, token: String):Response<DataUser>{
+        return ApiDataConnect.apiUser.getDataUser(userId, token)
+    }
 }

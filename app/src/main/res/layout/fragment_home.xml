@@ -9,6 +9,7 @@
 
 
     <include
+        app:layout_scrollFlags="scroll|enterAlways|snap"
         android:id="@+id/toolbarHome"
         layout="@layout/toolbar_home"
         android:layout_width="match_parent"
@@ -30,6 +31,7 @@
         tools:layout_editor_absoluteX="10dp">
 
         <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Лайфхаки"

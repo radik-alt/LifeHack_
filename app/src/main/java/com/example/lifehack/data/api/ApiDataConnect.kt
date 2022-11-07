@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 object ApiDataConnect {
 
@@ -50,5 +51,9 @@ object ApiDataConnect {
 
     val apiStars : StarsApi by lazy {
         retrofit.create(StarsApi::class.java)
+    }
+
+    val apiUser : Users by lazy {
+        retrofit.create(Users::class.java)
     }
 }

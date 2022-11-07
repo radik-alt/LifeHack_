@@ -70,6 +70,9 @@
         <argument
             android:name="contentOfPost"
             app:argType="com.example.lifehack.data.entity.Posts.Content" />
+        <action
+            android:id="@+id/action_postShowFragment_to_editPostFragment"
+            app:destination="@id/editPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/ratingFragment"
@@ -118,5 +121,14 @@
         <argument
             android:name="topPost"
             app:argType="com.example.lifehack.data.entity.Stars.Top100.Top100Item" />
+    </fragment>
+    <fragment
+        android:id="@+id/editPostFragment"
+        android:name="com.example.lifehack.presentation.Home.editPost.EditPostFragment"
+        android:label="fragment_edit_post"
+        tools:layout="@layout/fragment_edit_post" >
+        <argument
+            android:name="contentOfPost"
+            app:argType="com.example.lifehack.data.entity.Posts.Content" />
     </fragment>
 </navigation>

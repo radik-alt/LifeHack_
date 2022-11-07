@@ -2,6 +2,7 @@ package com.example.lifehack.data.api
 
 import com.example.lifehack.data.entity.Stars.GetStars
 import com.example.lifehack.data.entity.Stars.PostStars
+import com.example.lifehack.data.entity.Stars.SetStar.SetStars
 import com.example.lifehack.data.entity.Stars.Top100.Top100
 import retrofit2.Response
 import retrofit2.http.Body
@@ -24,7 +25,7 @@ interface StarsApi {
     suspend fun postStarsOfPost(
         @Header("Authorization") Bearer: String,
         @Body postStars: PostStars
-    )
+    ):Response<SetStars>
 
     @DELETE("star/{id}")
     suspend fun deleteStarsOfPost(

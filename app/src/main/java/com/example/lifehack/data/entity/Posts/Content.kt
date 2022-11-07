@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Content(
-    val countStar: Int,
+    val count_star: Int,
     val description: String,
     val tags: List<String>?,
     val post_id: String,

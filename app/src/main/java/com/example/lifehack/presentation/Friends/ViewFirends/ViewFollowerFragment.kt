@@ -5,10 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.lifehack.R
 import com.example.lifehack.databinding.FragmentHomeBinding
 import com.example.lifehack.databinding.FragmentViewFollowerBinding
+import com.example.lifehack.presentation.Home.SharedTokenViewModel
+import com.example.lifehack.presentation.adapter.AdapterMyLifeHacks.AdapterMyLifeHacks
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.lang.RuntimeException
 
@@ -19,10 +24,23 @@ class ViewFollowerFragment : Fragment() {
     private val binding: FragmentViewFollowerBinding
         get() = _binding ?: throw RuntimeException("FragmentViewFollowerBinding == null")
 
+    private val dataUser = navArgs<ViewFollowerFragmentArgs>()
+    private val sharedTokenViewModel:SharedTokenViewModel by activityViewModels()
+    private val viewFriendsViewModel : ViewFriendsViewModel by lazy {
+        ViewModelProvider(this)[ViewFriendsViewModel::class.java]
+    }
+    private var adapterMyLifeHacks:AdapterMyLifeHacks ?= null
 
     override fun onResume() {
         super.onResume()
         hideBottomView()
+        setData()
+        val token = sharedTokenViewModel.getToken().value
+        if (token != null) {
+            viewFriendsViewModel.setToken(token)
+            viewFriendsViewModel.getAllPostUser(dataUser.value.dataUser.followedId)
+            setAdapter()
+        }
     }
 
     override fun onCreateView(
@@ -41,7 +59,7 @@ class ViewFollowerFragment : Fragment() {
         }
 
         binding.deleteFriends.setOnClickListener {
-
+            viewFriendsViewModel.snackBar(requireView(), "Удалил из друзей :(")
         }
     }
 
@@ -52,6 +70,19 @@ class ViewFollowerFragment : Fragment() {
             if (bottom != null && bottom.visibility == View.VISIBLE) {
                 bottom.visibility = View.GONE
             }
+        }
+    }
+
+    private fun setData(){
+        val content = dataUser.value.dataUser
+        binding.nameUser.text = content.followedName
+        adapterMyLifeHacks = AdapterMyLifeHacks()
+        binding.lifeHackUsers.adapter = adapterMyLifeHacks
+    }
+
+    private fun setAdapter(){
+        viewFriendsViewModel.getPostsOfUser().observe(viewLifecycleOwner){
+            adapterMyLifeHacks?.setData(it.content)
         }
     }
 

@@ -4,19 +4,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lifehack.data.entity.Comments.Comments
 import com.example.lifehack.data.entity.Comments.Content
 import com.example.lifehack.data.entity.Comments.Data
 import com.example.lifehack.databinding.ItemCommentsBinding
+import com.example.lifehack.presentation.adapter.AdapterMyLifeHacks.DiffUtilsMyLifeHack
 import com.example.lifehack.presentation.adapter.intreface.OnClickComment
 
 class AdapterComments(
-    private val listComment: List<Data>,
     private val userId : String,
     private val onClickComment: OnClickComment
 ) : RecyclerView.Adapter<CommentsViewHolder>(){
 
+    private val listComment = ArrayList<Data>()
     private var editComment = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentsViewHolder {
@@ -57,6 +59,13 @@ class AdapterComments(
             editComment = false
             NO_EDIT
         }
+    }
+
+    fun setData(listComment: List<Data>){
+        val diffUtil = DiffUtilsComments(this.listComment, listComment)
+        val diffResult = DiffUtil.calculateDiff(diffUtil)
+        diffResult.dispatchUpdatesTo(this)
+        this.listComment.addAll(listComment)
     }
 
     companion object{

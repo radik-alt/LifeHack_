@@ -57,16 +57,6 @@ class HomeFragment : Fragment() {
             setAdapter()
             loader(false)
         }
-
-        binding.listHomePosts.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-            }
-        })
     }
 
     override fun onCreateView(
@@ -74,7 +64,6 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
         showBottomView()
         return binding.root
     }
@@ -86,6 +75,33 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_settingUserFragment)
         }
 
+        binding.listHomePosts.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+
+            var position = 0
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                position += newState
+                Log.d("ScrollPosition", position.toString())
+            }
+
+            var scroll = 0
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                Log.d("ScrollPosition", "$dx $dy")
+                scroll += dy
+                if (scroll > 250){
+                    binding.toolbarHome.root.visibility = View.GONE
+                    binding.title.visibility = View.GONE
+                }
+
+                if (scroll <= 50){
+                    binding.toolbarHome.root.visibility = View.VISIBLE
+                    binding.title.visibility = View.VISIBLE
+                }
+
+            }
+        })
     }
 
     private fun loader(load: Boolean){

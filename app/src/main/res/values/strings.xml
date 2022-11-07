@@ -19,7 +19,12 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="lorem_inspum">Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-</string>
     <string name="save_button">Сохранить</string>
-    <string name="save">Сохарнить</string>
+    <string name="save">Редактировать данные</string>
+
+    <string name="subscribe">Подписаться</string>
+    <string name="not_subscribe">Отписаться</string>
+    <string name="set_stars">Поставьте оценку</string>
+
 
     <string-array name="spinnerTag">
         <item>Дома</item>

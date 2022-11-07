@@ -15,6 +15,7 @@ class HomeViewModel(
 
     private val apiRepository = ApiRepositoryImpl()
     private val postMain = MutableLiveData<MainPost>()
+    private val scrollPost = MutableLiveData<Int>()
 
     fun getPosts(token:String){
         viewModelScope.launch {
@@ -28,6 +29,8 @@ class HomeViewModel(
             Log.d("RequestMainPost", request.code().toString())
         }
     }
+
+    fun getScrollPost() :LiveData<Int> = scrollPost
 
     fun getPostsData():LiveData<MainPost> = postMain
 }

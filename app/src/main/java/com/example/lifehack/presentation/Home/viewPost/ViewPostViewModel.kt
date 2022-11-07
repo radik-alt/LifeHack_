@@ -15,6 +15,8 @@ import com.example.lifehack.data.entity.Stars.GetStars
 import com.example.lifehack.data.entity.Stars.PostStars
 import com.example.lifehack.data.repository.ApiRepositoryImpl
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 
 class ViewPostViewModel(
@@ -48,6 +50,14 @@ class ViewPostViewModel(
                 Log.d("RequestComments", requestComments.errorBody().toString())
             }
             Log.d("RequestComments", requestComments.code().toString())
+        }
+    }
+
+    fun deletePost(postId: String){
+        viewModelScope.launch {
+            token?.let {
+                apiRepository.deletePost(postId, it)
+            }
         }
     }
 
@@ -100,30 +110,45 @@ class ViewPostViewModel(
         }
     }
 
-    fun setUpdateStarsOfPost(stars: PostStars){
-        viewModelScope.launch {
-            token?.let {
-                apiRepository.setStarsOfPost(it, stars)
-            }
-        }
-    }
+//    fun setUpdateStarsOfPost(stars: PostStars){
+//        viewModelScope.launch {
+//            token?.let {
+//                apiRepository.setStarsOfPost(it, stars)
+//            }
+//        }
+//    }
+//
+//    fun getStarsOfPost(){
+//        viewModelScope.launch {
+//            val getStars = token?.let {
+//                idPost?.let { idPost -> apiRepository.getStarsOfPost(idPost, it) }
+//            }
+//            if (getStars != null){
+//                if (getStars.isSuccessful){
+//                    starsOfPost.postValue(getStars.body())
+//                    Log.d("GetStarsData", getStars.body().toString())
+//                } else {
+//                    Log.d("GetRequestStars", getStars.code().toString())
+//                }
+//            }
+//        }
+//    }
 
-    fun getStarsOfPost(){
+    fun validFollowerUser(userid:String):Flow<Boolean> = flow{
         viewModelScope.launch {
-            val getStars = token?.let {
-                idPost?.let { idPost -> apiRepository.getStarsOfPost(idPost, it) }
-            }
-            if (getStars != null){
-                if (getStars.isSuccessful){
-                    starsOfPost.postValue(getStars.body())
-                    Log.d("GetStarsData", getStars.body().toString())
-                } else {
-                    Log.d("GetRequestStars", getStars.code().toString())
+            val allFollowerUser = token?.let { apiRepository.getFollowUsers(it) }
+            if (allFollowerUser?.isSuccessful == true){
+                val listUser = allFollowerUser.body()?.data
+                if (listUser != null) {
+                    for (i in listUser){
+                        if (i.followedId == userid){
+                            emit(true)
+                        }
+                    }
                 }
             }
         }
     }
-
 
     fun validCommentSend(comment:String):Boolean{
         return comment.isNotEmpty()

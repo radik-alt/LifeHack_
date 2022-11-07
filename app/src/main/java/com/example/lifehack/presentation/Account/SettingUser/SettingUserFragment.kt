@@ -9,9 +9,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.lifehack.R
-import com.example.lifehack.databinding.FragmentRatingBinding
+import com.example.lifehack.data.Utils
+import com.example.lifehack.data.entity.User.DataUser
 import com.example.lifehack.databinding.FragmentSettingUserBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
+import com.example.lifehack.presentation.adapter.AdapterMyLifeHacks.AdapterMyLifeHacks
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.lang.RuntimeException
 
 
@@ -27,6 +30,22 @@ class SettingUserFragment : Fragment() {
         ViewModelProvider(this)[SettingViewModel::class.java]
     }
 
+    private var adapterMyLifeHacks:AdapterMyLifeHacks ?= null
+
+    override fun onResume() {
+        super.onResume()
+        hideBottomView()
+        val token = sharedTokenViewModel.getToken().value
+        if (token != null)
+            settingViewModel.setToken(token)
+        else
+            findNavController().popBackStack()
+
+        getDataUser()
+        getDataPosts()
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,10 +59,44 @@ class SettingUserFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.logout.setOnClickListener {
-            val token = sharedTokenViewModel.getToken().value
-            if (token != null) {
-                settingViewModel.logout(token)
-                findNavController().navigate(R.id.action_settingUserFragment_to_logInAccountFragment)
+            settingViewModel.logout()
+            findNavController().navigate(R.id.action_settingUserFragment_to_logInAccountFragment)
+        }
+
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun getDataUser(){
+        settingViewModel.getDataUser(Utils.user_default)
+        settingViewModel.getDataUser().observe(viewLifecycleOwner){
+            setData(it)
+        }
+    }
+
+    private fun getDataPosts() {
+        settingViewModel.getPostUser()
+        settingViewModel.getDataPost().observe(viewLifecycleOwner){
+            adapterMyLifeHacks?.setData(it.content)
+        }
+    }
+
+
+    private fun setData(user: DataUser){
+        binding.firstName.setText(user.data[0].firstName)
+        binding.lastName.setText(user.data[0].lastName)
+
+        adapterMyLifeHacks = AdapterMyLifeHacks()
+        binding.recyclerMyLifeHacks.adapter = adapterMyLifeHacks
+    }
+
+    private fun hideBottomView(){
+        val fragmentActivity = activity
+        if (activity != null){
+            val bottom = fragmentActivity?.findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+            if (bottom != null && bottom.visibility == View.VISIBLE) {
+                bottom.visibility = View.GONE
             }
         }
     }

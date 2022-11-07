@@ -75,143 +75,196 @@
 
     </GridLayout>
 
-
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="200sp"
-        android:layout_marginTop="10sp"
-        android:src="@drawable/image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
-
-    <GridLayout
-        android:id="@+id/gridLayout2"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20sp"
-        android:columnCount="2"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:layout_height="0sp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
         tools:layout_editor_absoluteX="10dp">
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/namePost"
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/imageView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textColor="@color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:layout_height="250sp"
+                android:layout_marginTop="10sp"
+                android:scaleType="fitXY"
+                android:src="@drawable/image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/gridLayout" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/gridLayout2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5sp"
-                android:orientation="horizontal">
+                android:layout_marginTop="20sp"
+                android:columnCount="2"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                tools:layout_editor_absoluteX="10dp">
 
-                <TextView
-                    android:id="@+id/starsPost"
+
+                <LinearLayout
+                    android:id="@+id/linearLayout10"
+                    android:layout_width="0sp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/linearLayout11"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/namePost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_name"
+                        android:textColor="@color/black"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5sp"
+                        android:orientation="horizontal">
+
+                        <RatingBar
+                            android:id="@+id/ratingBar"
+                            style="@style/Widget.AppCompat.RatingBar.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical" />
+
+                        <TextView
+                            android:id="@+id/starsPost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="15sp"
+                            android:layout_marginEnd="5sp"
+                            android:text="4.8"
+                            android:textColor="@color/goldColor"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <!--                <ImageView-->
+                        <!--                    android:layout_width="20sp"-->
+                        <!--                    android:layout_height="20sp"-->
+                        <!--                    android:layout_gravity="center_vertical"-->
+                        <!--                    android:layout_marginRight="15sp"-->
+                        <!--                    android:src="@drawable/ic_golden_star_24" />-->
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/linearLayout11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="5sp"
-                    android:text="4.8"
-                    android:textColor="@color/goldColor"
-                    android:textSize="14sp"
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/subscribe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36sp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/fun_button"
+                        android:paddingStart="15sp"
+                        android:paddingEnd="15sp"
+                        android:text="@string/subscribe"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_marginTop="10sp"
+                android:background="@color/inputColor" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp"
+                app:layout_constraintTop_toBottomOf="@+id/gridLayout2"
+                tools:layout_editor_absoluteX="10dp">
+
+                <TextView
+                    android:id="@+id/descriptionPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:inputType="textMultiLine"
+                    android:lineHeight="24sp"
+                    android:maxLines="5"
+                    android:text="Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="70sp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+                <TextView
+                    android:id="@+id/titleComments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Отзывы"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <ImageView
-                    android:layout_width="20sp"
-                    android:layout_height="20sp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="15sp"
-                    android:src="@drawable/ic_golden_star_24" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1sp"
+                    android:layout_marginTop="10sp"
+                    android:background="@color/inputColor" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/commentRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10sp"
+                    android:orientation="vertical"
+                    tools:listitem="@layout/item_comments"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|center_vertical">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="80sp"
-                android:id="@+id/subscribe"
-                android:layout_height="35sp"
-                android:background="@drawable/fun_button"
-                android:text="Fun"
-                android:textColor="@color/white" />
+    </androidx.core.widget.NestedScrollView>
 
-        </LinearLayout>
 
-    </GridLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15sp"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout2"
-        tools:layout_editor_absoluteX="10dp">
-
-        <TextView
-            android:id="@+id/descriptionPost"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:maxLines="5"
-            android:inputType="textMultiLine"
-            android:textColor="@color/black"
-            android:lineHeight="24sp"
-            android:textSize="18sp"
-            android:ellipsize="end"
-            android:text="Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-Lorem Ipsum - это текст-рыба, часто используемый в печати и вэб-" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0sp"
-        android:layout_marginTop="30sp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
-
-        <TextView
-            android:id="@+id/titleComments"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Отзывы"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_marginTop="5sp"
-            android:background="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="1sp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/commentRecycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10sp"
-            android:orientation="vertical"
-            android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"

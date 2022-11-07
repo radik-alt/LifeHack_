@@ -10,5 +10,4 @@ class ViewHolderPostHome(binding: ItemPostBinding) : RecyclerView.ViewHolder(bin
     val stars = binding.starsRating
     val image = binding.imagePost
     val tagsAdapter = binding.adapterTags
-
 }

@@ -88,7 +88,7 @@ class FriendsViewModel(
 
 sealed class FollowUsers(){
 
-    class Success(val users: List<Data>):FollowUsers()
+    class Success(val users: List<Data>?):FollowUsers()
     class Search(val users: List<Data>):FollowUsers()
     class Error(val error: String):FollowUsers()
 }
