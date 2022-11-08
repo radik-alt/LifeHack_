@@ -1,22 +1,18 @@
 package com.example.lifehack.presentation.Home.viewPost
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lifehack.R
-import com.example.lifehack.data.Utils
 import com.example.lifehack.data.entity.Comments.AddComment.AddComment
 import com.example.lifehack.data.entity.Comments.ChangeComment.ChangeComment
 import com.example.lifehack.data.entity.Comments.Comments
@@ -44,12 +40,13 @@ class PostShowFragment : Fragment() {
     private val starsViewModel:StarsViewModel by activityViewModels()
 
     private var comments: Comments?=null
-    private var userdId = Utils.user_default
+    private var userId:String?=null
 
 
     override fun onResume() {
         hideBottomView()
         super.onResume()
+        userId = sharedViewModel.getUserId()
         sharedViewModel.getToken().observe(viewLifecycleOwner){
             postViewModel.setToken(it.accessToken)
             postViewModel.setPostId(navPost.contentOfPost.post_id)
@@ -117,27 +114,6 @@ class PostShowFragment : Fragment() {
             editPost()
         }
 
-        binding.commentRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-            }
-
-            var scroll = 0
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                scroll += dy
-                if (scroll > 150){
-                    binding.titleComments.visibility = View.GONE
-                }
-
-                if (scroll <= 50){
-                    binding.titleComments.visibility = View.VISIBLE
-                }
-            }
-        })
-
-
     }
 
     private fun hideBottomView(){
@@ -174,14 +150,14 @@ class PostShowFragment : Fragment() {
 
             val dataComments = comments?.content?.get(0)?.data
             val adapter = dataComments?.let { listData ->
-                AdapterComments(userdId, object : OnClickComment{
+                AdapterComments(userId.toString(), object : OnClickComment{
                     override fun onClickComment(comment: Data, view: Int) {
                         when (view) {
                             0 -> {
                                 postViewModel.setIsEditComment(false)
                             }
                             1 -> {
-                                if (userdId == comment.author_id){
+                                if (userId == comment.author_id){
                                     postViewModel.setIsEditComment(true)
                                     postViewModel.selectCommentChange.value = comment
                                     binding.textComment.setText(comment.comment)
@@ -201,7 +177,7 @@ class PostShowFragment : Fragment() {
 
     private fun subscription(){
         val postFollow = PostFollow(
-            followed_id = userdId
+            followed_id = userId.toString()
         )
         postViewModel.subscribe(postFollow)
     }
@@ -263,7 +239,7 @@ class PostShowFragment : Fragment() {
         binding.ratingBar.rating = content.count_star.toFloat()
         binding.descriptionPost.text = content.description
 
-        if (userdId != content.user_id){
+        if (userId != content.user_id){
             binding.subscribe.visibility = View.VISIBLE
             binding.deletePost.visibility = View.GONE
             binding.editPost.visibility = View.GONE

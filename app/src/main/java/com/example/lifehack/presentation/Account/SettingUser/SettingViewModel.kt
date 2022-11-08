@@ -9,7 +9,7 @@ import com.example.lifehack.data.Utils
 import com.example.lifehack.data.entity.Auth.RefreshToken
 import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Posts.ProfilePosts.PostsUserProfile
-import com.example.lifehack.data.entity.User.DataUser
+import com.example.lifehack.presentation.User.DataUser
 import com.example.lifehack.data.repository.ApiRepositoryImpl
 import kotlinx.coroutines.launch
 
@@ -21,6 +21,11 @@ class SettingViewModel(
     private var dataUser = MutableLiveData<DataUser>()
     private var dataPosts = MutableLiveData<PostsUserProfile>()
     private var token:RequestToken?=null
+    private var userId:String?=null
+
+    fun setUserId(userId: String){
+        this.userId = userId
+    }
 
     fun setToken(tokenData: RequestToken) {
         token = tokenData
@@ -60,10 +65,10 @@ class SettingViewModel(
         }
     }
 
-    fun getDataUser(userId:String){
+    fun getDataUserApi(){
         viewModelScope.launch {
             val requestDataUser = token?.let {
-                apiRepository.getDataUser(userId, it.accessToken)
+                apiRepository.getDataUser(userId.toString(), it.accessToken)
             }
             if (requestDataUser != null) {
                 dataUser.postValue(requestDataUser.body())

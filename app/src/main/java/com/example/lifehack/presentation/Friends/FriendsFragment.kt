@@ -57,22 +57,19 @@ class FriendsFragment : Fragment() {
 
         binding.searchFollower.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
             }
 
             override fun onTextChanged(searchText: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (searchText != null && searchText.isNotEmpty()) {
+                if (searchText != null && searchText.isNotEmpty() && friendsViewModel.getUsersList().isNotEmpty()) {
                     friendsViewModel.getSearchFollower(searchText)
                     getFollowerUser()
-                } else if (searchText?.isEmpty() == true) {
+                } else if (searchText?.isEmpty() == true && friendsViewModel.getUsersList().isNotEmpty()) {
                     friendsViewModel.getFollowUsers()
                     getFollowerUser()
                 }
             }
 
             override fun afterTextChanged(p0: Editable?) {
-//                if (p0?.isEmpty() == true)
-//                    friendsViewModel.getFollowUsers()
             }
         })
 
@@ -119,6 +116,7 @@ class FriendsFragment : Fragment() {
         binding.recyclerFriends.adapter = FriendsAdapter(friends, object : OnClickFollower{
             override fun onClickFollower(data: Data, delete:Boolean) {
                 if (delete){
+                    deleteFollower(data.followedId)
                     friendsViewModel.snackBar(requireView(), "Удаление подписчика...")
                 } else {
                     val action = FriendsFragmentDirections.actionFriendsFragmentToViewFollowerFragment(data)

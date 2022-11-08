@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.lifehack.R
 import com.example.lifehack.data.Utils
-import com.example.lifehack.data.entity.User.DataUser
+import com.example.lifehack.presentation.User.DataUser
 import com.example.lifehack.databinding.FragmentSettingUserBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
 import com.example.lifehack.presentation.adapter.AdapterMyLifeHacks.AdapterMyLifeHacks
@@ -36,6 +36,13 @@ class SettingUserFragment : Fragment() {
         super.onResume()
         hideBottomView()
         val token = sharedTokenViewModel.getToken().value
+        val userId = sharedTokenViewModel.getUserId()
+
+        if (userId != null)
+            settingViewModel.setUserId(userId)
+        else
+            findNavController().popBackStack()
+
         if (token != null)
             settingViewModel.setToken(token)
         else
@@ -69,7 +76,7 @@ class SettingUserFragment : Fragment() {
     }
 
     private fun getDataUser(){
-        settingViewModel.getDataUser(Utils.user_default)
+        settingViewModel.getDataUserApi()
         settingViewModel.getDataUser().observe(viewLifecycleOwner){
             setData(it)
         }

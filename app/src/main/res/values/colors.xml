@@ -10,7 +10,12 @@
 
     <color name="primaryColor">#ff7f66</color>
     <color name="editTextColor">#f6f6f6</color>
-    <color name="goldColor">#F8A41A</color>
+    <color name="goldColor">#FBA10C</color>
+
+    <color name="topArea">#3BCF41</color>
+    <color name="middleArea">#FFCB30</color>
+    <color name="errorArea">#C50000</color>
+
     <color name="secondColor">#3a68b0</color>
     <color name="inputColor">#f1f1f1</color>
     <color name="funButton">#3e832a</color>

@@ -20,6 +20,8 @@ class FriendsViewModel(
     private var allUsers = ArrayList<Data>()
     private var isSearch = MutableLiveData<Boolean>(false)
 
+    fun getUsersList():ArrayList<Data> = allUsers
+
     fun getIsSearch():LiveData<Boolean> = isSearch
     fun setIsSearch(search:Boolean){
         isSearch.value = search
@@ -63,7 +65,7 @@ class FriendsViewModel(
 
     fun deleteFollowUser(followId:String){
         viewModelScope.launch {
-            token?.let {
+            val requestDeleteFollow = token?.let {
                 apiRepository.deleteFollowUser(it, followId)
             }
         }

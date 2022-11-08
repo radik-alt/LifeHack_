@@ -49,7 +49,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/sendStar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="45sp"
         android:layout_marginTop="25sp"
         android:background="@drawable/send_button"
         android:paddingStart="20sp"

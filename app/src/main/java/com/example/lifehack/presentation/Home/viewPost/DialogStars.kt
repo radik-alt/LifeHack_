@@ -1,18 +1,13 @@
 package com.example.lifehack.presentation.Home.viewPost
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RatingBar
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.lifehack.R
 import com.example.lifehack.databinding.DialogStarBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class DialogStars : BottomSheetDialogFragment() {
@@ -47,17 +42,45 @@ class DialogStars : BottomSheetDialogFragment() {
 
         binding.rating.setOnRatingBarChangeListener { ratingBar, fl, b ->
             countStar = ratingBar.rating.toInt()
-            when (countStar){
-                5 -> {
-                    binding.countStar.text = countStar.toString()
-                }
-            }
+
+            binding.countStar.setTextColor(ratingColor())
+            binding.countStar.text = countStar.toString()
         }
 
         binding.sendStar.setOnClickListener {
-            starsViewModel.setStar(countStar)
-            dismiss()
+            if (valid()){
+                starsViewModel.setStar(countStar)
+                dismiss()
+            }
+
         }
+    }
+
+    private fun ratingColor(): Int {
+        return when (countStar){
+            1 -> {
+                return requireContext().resources.getColor(R.color.errorArea)
+            }
+            2-> {
+                return requireContext().resources.getColor(R.color.errorArea)
+            }
+            3-> {
+                return requireContext().resources.getColor(R.color.middleArea)
+            }
+            4 -> {
+                return requireContext().resources.getColor(R.color.goldColor)
+            }
+            5 -> {
+                return requireContext().resources.getColor(R.color.topArea)
+            }
+            else -> {
+                return requireContext().resources.getColor(R.color.topArea)
+            }
+        }
+    }
+
+    private fun valid(): Boolean {
+        return countStar != 0
     }
 
     override fun onDestroyView() {

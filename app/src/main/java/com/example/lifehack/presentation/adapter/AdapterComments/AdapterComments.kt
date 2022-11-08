@@ -31,7 +31,7 @@ class AdapterComments(
         holder.comment.text = listComment[position].comment
         holder.userComment.text = listComment[position].author_name
 
-        if (editComment)
+        if (listComment[position].author_id == userId)
             holder.delete.visibility = View.VISIBLE
         else
             holder.delete.visibility = View.GONE
