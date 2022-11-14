@@ -1,7 +1,6 @@
 package com.example.lifehack.presentation.Rating
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +12,7 @@ import com.example.lifehack.R
 import com.example.lifehack.data.entity.Stars.Top100.Top100Item
 import com.example.lifehack.databinding.FragmentRatingBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
-import com.example.lifehack.presentation.adapter.AdapterPostHome
 import com.example.lifehack.presentation.adapter.AdapterTop100.AdapterTop100
-import com.example.lifehack.presentation.adapter.intreface.OnClickPost
 import com.example.lifehack.presentation.adapter.intreface.OnClickTopPost
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.lang.RuntimeException
@@ -56,7 +53,7 @@ class RatingFragment : Fragment() {
     }
 
     private fun setAdapter(){
-        ratingViewModel.getPostTop100OfTag()
+        ratingViewModel.setTop100Post()
         ratingViewModel.getTop100Post().observe(viewLifecycleOwner){
             val adapterTop100 = AdapterTop100(it, object : OnClickTopPost{
                 override fun clickTopPost(post: Top100Item) {

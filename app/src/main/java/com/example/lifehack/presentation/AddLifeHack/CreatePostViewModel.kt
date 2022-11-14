@@ -2,14 +2,15 @@ package com.example.lifehack.presentation.AddLifeHack
 
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
-import com.example.lifehack.data.entity.Tags
+import com.example.lifehack.data.entity.Tags.GetListTagsItem
+import com.example.lifehack.data.entity.TagsDTO
 import com.example.lifehack.data.repository.ApiRepositoryImpl
+import com.example.lifehack.data.repository.TagsRepositoryImpl
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -18,9 +19,12 @@ class CreatePostViewModel(
 ): ViewModel() {
 
     private val apiRepository = ApiRepositoryImpl()
+    private val tagsRepositoryImpl = TagsRepositoryImpl()
 
-    private val allTagList = ArrayList<Tags>()
-    private var tagsList = ArrayList<Tags>()
+    val listTag = MutableLiveData<ArrayList<GetListTagsItem>>()
+
+    private val allTagList = ArrayList<TagsDTO>()
+    private var tagsList = ArrayList<TagsDTO>()
     private var imageList = ArrayList<String>()
     private var title = MutableLiveData<String>()
     private var description = MutableLiveData<String>()
@@ -28,14 +32,10 @@ class CreatePostViewModel(
     private var token:String ?= null
 
     init {
-        allTagList.add(Tags("Дома", false))
-        allTagList.add(Tags("Еда", false))
-        allTagList.add(Tags("Спорт", false))
-        allTagList.add(Tags("Дети", false))
-        allTagList.add(Tags("Техника", false))
+        getListTags()
     }
 
-    fun getListAllTags():ArrayList<Tags> = allTagList
+    fun getListAllTags():ArrayList<TagsDTO> = allTagList
 
     fun setToken(tokenData: RequestToken){
         token = tokenData.accessToken
@@ -63,18 +63,18 @@ class CreatePostViewModel(
         imageList.add(imageData)
     }
 
-    fun addTags(tagsData: Tags){
+    fun addTags(tagsData: TagsDTO){
         tagsList.add(tagsData)
         updateTagAll(tagsData)
         Log.d("GetListTags", "$tagsList $allTagList")
     }
 
-    private fun updateTagAll(tag:Tags){
+    private fun updateTagAll(tag:TagsDTO){
         val index = allTagList.indexOf(tag)
         allTagList[index].select = true
     }
 
-    fun deleteTags(tagsData: Tags){
+    fun deleteTags(tagsData: TagsDTO){
         tagsList.remove(tagsData)
         updateTagAll(tagsData)
         Log.d("GetListTags", "$tagsList $allTagList")
@@ -84,12 +84,17 @@ class CreatePostViewModel(
         imageList.remove(imageData)
     }
 
-    fun setTitle(titleData:String){
-        title.value = titleData
-    }
-
-    fun setDescription(descData: String){
-        description.value = descData
+    fun getListTags(){
+        viewModelScope.launch {
+            val requestTags = token?.let { tagsRepositoryImpl.getListTags(it) }
+            when (requestTags?.code()){
+                200 -> {
+                    listTag.postValue(requestTags.body())
+                } else -> {
+                    Log.d("GetListTags", "${requestTags?.code()}")
+                }
+            }
+        }
     }
 
     fun validCreatePost(title:String, description: String): Boolean {

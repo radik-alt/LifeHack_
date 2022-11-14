@@ -1,4 +1,4 @@
-package com.example.lifehack.presentation.Account.SettingUser
+package com.example.lifehack.presentation.SettingUser
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.lifehack.R
 import com.example.lifehack.data.Utils
-import com.example.lifehack.presentation.User.DataUser
+import com.example.lifehack.data.entity.User.DataUser
 import com.example.lifehack.databinding.FragmentSettingUserBinding
 import com.example.lifehack.presentation.Home.SharedTokenViewModel
 import com.example.lifehack.presentation.adapter.AdapterMyLifeHacks.AdapterMyLifeHacks
@@ -35,23 +35,11 @@ class SettingUserFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         hideBottomView()
-        val token = sharedTokenViewModel.getToken().value
-        val userId = sharedTokenViewModel.getUserId()
-
-        if (userId != null)
-            settingViewModel.setUserId(userId)
-        else
-            findNavController().popBackStack()
-
-        if (token != null)
-            settingViewModel.setToken(token)
-        else
-            findNavController().popBackStack()
-
+        validUserId()
+        validToken()
         getDataUser()
         getDataPosts()
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,6 +61,22 @@ class SettingUserFragment : Fragment() {
         binding.back.setOnClickListener {
             findNavController().popBackStack()
         }
+    }
+
+    private fun validUserId(){
+        val userId = sharedTokenViewModel.getUserId()
+        if (userId != null)
+            settingViewModel.setUserId(userId)
+        else
+            findNavController().popBackStack()
+    }
+
+    private fun validToken(){
+        val token = sharedTokenViewModel.getToken().value
+        if (token != null)
+            settingViewModel.setToken(token)
+        else
+            findNavController().popBackStack()
     }
 
     private fun getDataUser(){

@@ -1,4 +1,4 @@
-package com.example.lifehack.presentation.Account.SettingUser
+package com.example.lifehack.presentation.SettingUser
 
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -9,7 +9,7 @@ import com.example.lifehack.data.Utils
 import com.example.lifehack.data.entity.Auth.RefreshToken
 import com.example.lifehack.data.entity.Auth.RequestToken
 import com.example.lifehack.data.entity.Posts.ProfilePosts.PostsUserProfile
-import com.example.lifehack.presentation.User.DataUser
+import com.example.lifehack.data.entity.User.DataUser
 import com.example.lifehack.data.repository.ApiRepositoryImpl
 import kotlinx.coroutines.launch
 

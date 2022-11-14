@@ -19,7 +19,7 @@ import com.example.lifehack.data.entity.Stars.GetStars
 import com.example.lifehack.data.entity.Stars.PostStars
 import com.example.lifehack.data.entity.Stars.SetStar.SetStars
 import com.example.lifehack.data.entity.Stars.Top100.Top100
-import com.example.lifehack.presentation.User.DataUser
+import com.example.lifehack.data.entity.User.DataUser
 import retrofit2.Response
 
 class ApiRepositoryImpl {

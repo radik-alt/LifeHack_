@@ -1,6 +1,6 @@
 package com.example.lifehack.data.api
 
-import com.example.lifehack.presentation.User.DataUser
+import com.example.lifehack.data.entity.User.DataUser
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

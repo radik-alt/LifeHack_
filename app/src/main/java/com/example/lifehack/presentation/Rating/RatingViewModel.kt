@@ -15,7 +15,7 @@ class RatingViewModel(
 ) : ViewModel(){
 
     private var token: String ?= null
-    private var tag: String ?= null
+    private var tag: String = "foto"
     private val apiRepositoryImpl = ApiRepositoryImpl()
 
     private val top100Post = MutableLiveData<Top100>()
@@ -35,26 +35,29 @@ class RatingViewModel(
         token = tokenData.accessToken
     }
 
-    fun getPostTop100OfTag(){
+    fun setTop100Post(){
         viewModelScope.launch {
             val requestGetTop100 = token?.let {
-                apiRepositoryImpl.getTop100OPostOfTag("foto", it)
+                apiRepositoryImpl.getTop100OPostOfTag(tag, it)
             }
-            if (requestGetTop100?.isSuccessful == true){
-                top100Post.postValue(requestGetTop100.body())
-            } else {
-                Log.d("GetTop100Request", "${requestGetTop100?.code()} ${requestGetTop100?.errorBody()}")
+            when (requestGetTop100?.code()) {
+                200 -> {
+                    top100Post.postValue(requestGetTop100.body())
+                }
+                else -> {
+                    log("${requestGetTop100?.code()} ${requestGetTop100?.errorBody()}")
+                }
             }
-//            when (requestGetTop100?.code()){
-//                200 -> {
-//                    top100Post.postValue(requestGetTop100.body())
-//                }
-//                else -> {
-//                    Log.d("GetTop100Request", "${requestGetTop100?.code()} ${requestGetTop100?.errorBody()}")
-//                }
-//            }
         }
+    }
+
+    private fun log(message:String){
+        Log.d("GetTop100Request", message)
+    }
+
+    private fun getTags(){
 
     }
+
 
 }

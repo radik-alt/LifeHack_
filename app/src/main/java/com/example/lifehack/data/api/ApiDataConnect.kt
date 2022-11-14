@@ -56,4 +56,8 @@ object ApiDataConnect {
     val apiUser : Users by lazy {
         retrofit.create(Users::class.java)
     }
+
+    val apiTags : TagsApi by lazy {
+        retrofit.create(TagsApi::class.java)
+    }
 }

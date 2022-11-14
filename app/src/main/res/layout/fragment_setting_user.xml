@@ -5,58 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="20sp"
-    tools:context=".presentation.Account.SettingUser.SettingUserFragment">
-
-    <GridLayout
-        android:id="@+id/gridLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:columnCount="2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/search_input"
-                android:padding="5sp"
-                android:src="@drawable/ic_back_black" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="10sp"
-                android:text="Назад"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_gravity="right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                android:id="@+id/logout"
-                android:backgroundTint="@color/white"
-                android:src="@drawable/ic_baseline_exit_to_app_24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-    </GridLayout>
+    tools:context=".presentation.SettingUser.SettingUserFragment">
 
 
     <androidx.core.widget.NestedScrollView
@@ -64,7 +13,8 @@
         android:layout_height="0sp"
         android:fillViewport="true"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/gridLayout"
+        android:overScrollMode="never"
+        app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="20dp">
 
         <LinearLayout
@@ -76,6 +26,58 @@
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@+id/gridLayout"
             tools:layout_editor_absoluteX="20dp">
+
+
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/search_input"
+                        android:padding="5sp"
+                        android:src="@drawable/ic_back_black" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10sp"
+                        android:text="Назад"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right">
+
+                    <ImageButton
+                        android:id="@+id/logout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/white"
+                        android:src="@drawable/ic_baseline_exit_to_app_24" />
+
+                </LinearLayout>
+
+            </GridLayout>
 
 
             <de.hdodenhof.circleimageview.CircleImageView

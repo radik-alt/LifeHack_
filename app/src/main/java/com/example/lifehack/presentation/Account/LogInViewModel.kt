@@ -23,13 +23,6 @@ class LogInViewModel(
     val requestAuthData = MutableLiveData<Auth>()
     private var auth:Auth?=null
 
-    private fun setRequestAuthFlow(auth: Auth) = flow {
-        emit(auth)
-    }
-
-    fun getRequest() = auth?.let {
-        setRequestAuthFlow(it)
-    }
 
     fun authUser(user:AuthUser) {
         viewModelScope.launch {
@@ -37,32 +30,31 @@ class LogInViewModel(
             if (requestAuth.isSuccessful){
                 val requestBody = requestAuth.body()
                 auth = requestBody?.let { Auth.SuccessAuth(it) }
-                requestBody?.let { Auth.SuccessAuth(it) }?.let { setRequestAuthFlow(it) }
-                requestAuthData.postValue(requestBody?.let { Auth.SuccessAuth(it) })
+                requestAuthData.value = requestBody?.let { Auth.SuccessAuth(it) }
             } else {
                 logServer(requestAuth.code())
-                when (requestAuth.code()){
-                    400 -> {
-                        val errorRequest = Auth.ErrorAuth("Такого пользователя нет...")
-                        setRequestAuthFlow(errorRequest)
-                        requestAuthData.postValue(errorRequest)
-                    }
-                    401 -> {
-                        val errorAuthorization = Auth.ErrorAuth("Ошибка аунтификации...")
-                        setRequestAuthFlow(errorAuthorization)
-                        requestAuthData.postValue(errorAuthorization)
-                    }
-                    404 -> {
-                        val errorNotFound = Auth.ErrorAuth("Такого пользователя нет...")
-                        setRequestAuthFlow(errorNotFound)
-                        requestAuthData.postValue(errorNotFound)
-                    }
-                    500 -> {
-                        val errorServer = Auth.ErrorAuth("Ошибка сервере...")
-                        setRequestAuthFlow(errorServer)
-                        requestAuthData.postValue(errorServer)
-                    }
-                }
+                val error = getErrorRequestCode(requestAuth.code())
+                requestAuthData.value = error
+            }
+        }
+    }
+
+    private fun getErrorRequestCode(code:Int): Auth.ErrorAuth {
+        return when (code){
+            400 -> {
+                Auth.ErrorAuth("Такого пользователя нет...")
+            }
+            401 -> {
+                Auth.ErrorAuth("Ошибка аунтификации...")
+            }
+            404 -> {
+                Auth.ErrorAuth("Такого пользователя нет...")
+            }
+            500 -> {
+                Auth.ErrorAuth("Ошибка сервере...")
+            }
+            else -> {
+                Auth.ErrorAuth("Неизвестна ошибка...")
             }
         }
     }
@@ -86,7 +78,6 @@ class LogInViewModel(
 }
 
 sealed class Auth{
-
     class SuccessAuth(val requestToken: RequestToken):Auth()
     class ErrorAuth(val errorMessage: String):Auth()
 }

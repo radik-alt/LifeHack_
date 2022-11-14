@@ -10,4 +10,10 @@ class Connection : BroadcastReceiver() {
 
     }
 
+    private fun getIsConnection(context: Context){
+
+        val connectManager = context
+
+    }
+
 }

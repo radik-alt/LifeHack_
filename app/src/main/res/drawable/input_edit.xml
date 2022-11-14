@@ -3,5 +3,6 @@
 
     <corners android:radius="10sp"/>
     <solid android:color="@color/editTextColor"/>
+    <stroke android:color="@color/primaryColor" android:width="1sp"/>
 
 </shape>

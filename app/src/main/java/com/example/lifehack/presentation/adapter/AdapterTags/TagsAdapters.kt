@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lifehack.R
-import com.example.lifehack.data.entity.Tags
-import com.example.lifehack.databinding.ItemPostBinding
+import com.example.lifehack.data.entity.Tags.GetListTagsItem
+import com.example.lifehack.data.entity.TagsDTO
 import com.example.lifehack.databinding.ItemTagsBinding
 import com.example.lifehack.presentation.adapter.intreface.OnClickTags
 
 class TagsAdapters(
-    private val tags: List<Tags>,
+    private val tags: ArrayList<GetListTagsItem>,
     private val onClickTags: OnClickTags
 ) : RecyclerView.Adapter<TagsViewHolder>() {
 
@@ -26,18 +26,18 @@ class TagsAdapters(
 
     override fun onBindViewHolder(holder: TagsViewHolder, position: Int) {
 
-        holder.button.text = tags[position].tag
+        holder.button.text = tags[position].title
 
-        when (position){
-            0 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.house_tag)
-            1 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.eat_tag)
-            2 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.sport_tag)
-            3 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.children_tag)
-            4 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.tech_tag)
-        }
+//        when (position){
+//            0 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.house_tag)
+//            1 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.eat_tag)
+//            2 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.sport_tag)
+//            3 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.children_tag)
+//            4 -> holder.button.background = ContextCompat.getDrawable(context, R.drawable.tech_tag)
+//        }
 
         holder.button.setOnClickListener {
-            selectTags(holder, position)
+//            selectTags(holder, position)
         }
     }
 
@@ -79,10 +79,6 @@ class TagsAdapters(
                 holder.button.background = ContextCompat.getDrawable(context, R.drawable.click_tech_tag)
             }
         }
-        tags[position].select = true
-        onClickTags.clickTags(
-            tag = tags[position]
-        )
     }
 
 

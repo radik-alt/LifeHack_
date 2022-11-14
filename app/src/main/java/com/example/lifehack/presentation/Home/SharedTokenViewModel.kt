@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lifehack.data.JWTUtils
 import com.example.lifehack.data.entity.Auth.RequestToken
-import com.example.lifehack.presentation.User.Data
+import com.example.lifehack.data.entity.User.Data
 import kotlinx.coroutines.launch
 
 class SharedTokenViewModel(

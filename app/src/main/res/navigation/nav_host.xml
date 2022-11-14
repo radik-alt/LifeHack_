@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_log_in" >
         <action
             android:id="@+id/action_logInFragment_to_homeFragment"
-            app:destination="@id/homeFragment"
+            app:destination="@id/nav_host"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -27,7 +27,7 @@
         <action
             android:id="@+id/action_logInAccountFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/homeFragment"
+            app:popUpTo="@id/nav_host"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
@@ -53,13 +53,13 @@
     </fragment>
     <fragment
         android:id="@+id/settingUserFragment"
-        android:name="com.example.lifehack.presentation.Account.SettingUser.SettingUserFragment"
+        android:name="com.example.lifehack.presentation.SettingUser.SettingUserFragment"
         android:label="fragment_setting_user"
         tools:layout="@layout/fragment_setting_user" >
         <action
             android:id="@+id/action_settingUserFragment_to_logInAccountFragment"
             app:destination="@id/logInAccountFragment"
-            app:popUpTo="@id/logInAccountFragment"
+            app:popUpTo="@id/nav_host"
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
