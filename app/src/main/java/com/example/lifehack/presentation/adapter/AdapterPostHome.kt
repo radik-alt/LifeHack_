@@ -3,20 +3,16 @@ package com.example.lifehack.presentation.adapter
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lifehack.data.Utils
 import com.example.lifehack.data.entity.Posts.Content
 import com.example.lifehack.databinding.ItemPostBinding
-import com.example.lifehack.presentation.adapter.AdapterTags.TagsAdapters
 import com.example.lifehack.presentation.adapter.AdapterTags.TagsOnPostAdapter.TagsPostAdapter
 import com.example.lifehack.presentation.adapter.intreface.OnClickPost
 import com.example.lifehack.presentation.adapter.intreface.OnClickTags
 
 class AdapterPostHome(
-    private val listPost: ArrayList<Content>,
+    private val listPost: List<Content>,
     private val onClickPost: OnClickPost
 ) : RecyclerView.Adapter<ViewHolderPostHome>() {
 

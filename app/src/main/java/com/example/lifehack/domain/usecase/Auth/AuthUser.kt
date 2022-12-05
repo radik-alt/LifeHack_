@@ -5,4 +5,5 @@ import com.example.lifehack.domain.repository.AuthRepository
 class AuthUser (private val authRepository: AuthRepository) {
 
 
+
 }

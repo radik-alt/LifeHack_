@@ -70,6 +70,7 @@ class PostShowFragment : Fragment() {
             clearFocusEditText()
         }
 
+
         binding.backHome.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -111,7 +112,8 @@ class PostShowFragment : Fragment() {
         }
 
         binding.editPost.setOnClickListener {
-            editPost()
+            val action = PostShowFragmentDirections.actionPostShowFragmentToEditPostFragment(navPost.contentOfPost)
+            findNavController().navigate(action)
         }
 
     }
@@ -126,10 +128,6 @@ class PostShowFragment : Fragment() {
         }
     }
 
-    private fun editPost(){
-        val action = PostShowFragmentDirections.actionPostShowFragmentToEditPostFragment(navPost.contentOfPost)
-        findNavController().navigate(action)
-    }
 
     private fun deletePost(){
         postViewModel.deletePost(navPost.contentOfPost.post_id)

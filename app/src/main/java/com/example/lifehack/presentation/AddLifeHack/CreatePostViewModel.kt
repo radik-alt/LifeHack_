@@ -31,10 +31,6 @@ class CreatePostViewModel(
 
     private var token:String ?= null
 
-    init {
-        getListTags()
-    }
-
     fun getListAllTags():ArrayList<TagsDTO> = allTagList
 
     fun setToken(tokenData: RequestToken){

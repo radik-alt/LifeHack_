@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -36,6 +38,7 @@ class RatingFragment : Fragment() {
         token.value?.let {
             ratingViewModel.setToken(it)
         }
+        workListTags()
         setAdapter()
     }
 
@@ -50,6 +53,15 @@ class RatingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.spinnerSort.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(adapter: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
     }
 
     private fun setAdapter(){
@@ -64,6 +76,32 @@ class RatingFragment : Fragment() {
             binding.listTopPosts.adapter = adapterTop100
         }
     }
+
+    private fun workListTags(){
+        ratingViewModel.getListTagsRequest()
+        ratingViewModel.getListTag().observe(viewLifecycleOwner){
+            setListTags(it)
+            binding.spinnerTag.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(adapter: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    val selectTag = adapter?.getItemAtPosition(position)
+                    ratingViewModel.setTag(selectTag.toString())
+                    setAdapter()
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+            }
+        }
+    }
+
+    private fun setListTags(listTags:ArrayList<String>){
+        val adapterTags = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, listTags)
+        adapterTags.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerTag.adapter = adapterTags
+        binding.spinnerTag.setSelection(0)
+        binding.spinnerTag.isEnabled = true
+    }
+
 
     private fun showBottomView(){
         val fragmentActivity = activity

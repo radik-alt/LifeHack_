@@ -24,6 +24,7 @@
     <string name="subscribe">Подписаться</string>
     <string name="not_subscribe">Отписаться</string>
     <string name="set_stars">Поставьте оценку</string>
+    <string name="update_btn">Обновить</string>
 
 
     <string-array name="spinnerTag">

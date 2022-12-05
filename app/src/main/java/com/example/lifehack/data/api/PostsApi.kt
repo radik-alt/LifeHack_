@@ -8,6 +8,8 @@ import com.example.lifehack.data.entity.Posts.MainPost
 import com.example.lifehack.data.entity.Posts.OnePost.CreatePost
 import com.example.lifehack.data.entity.Posts.OnePost.RequestCreatePost.RequestCreatePost
 import com.example.lifehack.data.entity.Posts.ProfilePosts.PostsUserProfile
+import com.example.lifehack.data.entity.Posts.UpdatePost.UpdatePost
+import com.example.lifehack.data.entity.Recommendation.RecommendationPosts
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -25,6 +27,12 @@ interface PostsApi {
         @Body post: CreatePost
     )
 
+    @POST(CREATE_UPDATE_POST)
+    suspend fun updatePost(
+        @Header("Authorization") Bearer: String,
+        @Body updatePost: UpdatePost
+    )
+
 
     @GET("user/{userId}/posts")
     suspend fun getPostsOfUserProfile(
@@ -38,5 +46,10 @@ interface PostsApi {
         @Path("postId") userId:String,
         @Header("Authorization") Bearer: String,
     )
+
+    @GET("post/recommendation?page=0&size=5&sort=id,desc")
+    suspend fun getRecommendationPosts(
+        @Header("Authorization") Bearer: String,
+    ):Response<RecommendationPosts>
 
 }

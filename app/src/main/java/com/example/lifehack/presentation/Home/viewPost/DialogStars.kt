@@ -48,11 +48,10 @@ class DialogStars : BottomSheetDialogFragment() {
         }
 
         binding.sendStar.setOnClickListener {
-            if (valid()){
+            if (validStars()){
                 starsViewModel.setStar(countStar)
                 dismiss()
             }
-
         }
     }
 
@@ -79,7 +78,7 @@ class DialogStars : BottomSheetDialogFragment() {
         }
     }
 
-    private fun valid(): Boolean {
+    private fun validStars(): Boolean {
         return countStar != 0
     }
 

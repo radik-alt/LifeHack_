@@ -161,6 +161,7 @@
                     android:id="@+id/recyclerMyLifeHacks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:overScrollMode="never"
                     android:layout_marginTop="10sp"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
